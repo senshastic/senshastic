@@ -1,0 +1,40 @@
+name: Update Coding Stats
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'   # every Monday at 4am UTC (covers the past week)
+  workflow_dispatch:        # manual trigger from Actions tab
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout profile repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Generate stats card
+        env:
+          STATS_TOKEN:     ${{ secrets.STATS_TOKEN }}
+          GITHUB_USERNAME: senshastic
+          STATS_DAYS:      7
+          OUTPUT_FILE:     stats.svg
+        run: python generate_stats.py
+
+      - name: Commit updated card
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add stats.svg
+          git diff --cached --quiet || git commit -m "chore: update weekly coding stats [skip ci]"
+          git push
