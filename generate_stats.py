@@ -155,10 +155,10 @@ line(f'<rect x="94" y="0" width="36" height="3" rx="1" fill="{BORDER}"/>')
 
 # ── header
 y = 35
-line(f'<text x="{PAD}" y="{y}" font-family="\'Segoe UI\',system-ui,sans-serif" '
+line(f'<text x="{PAD}" y="{y}" font-family="\'Monaspace Neon\',\'Monaspace Argon\',\'Cascadia Code\',\'SF Mono\',ui-monospace,monospace" '
      f'font-size="11" font-weight="700" fill="{GOLD}" letter-spacing="2.5">'
      f'CODING STATS · LAST {DAYS} DAYS</text>')
-line(f'<text x="{W - PAD}" y="{y}" font-family="\'Courier New\',Consolas,monospace" '
+line(f'<text x="{W - PAD}" y="{y}" font-family="\'Monaspace Neon\',\'Monaspace Argon\',\'Cascadia Code\',\'SF Mono\',ui-monospace,monospace" '
      f'font-size="10" fill="{TEXT2}" text-anchor="end">{esc(period)}</text>')
 
 # divider
@@ -176,9 +176,9 @@ cell_w = (W - PAD * 2) // 4
 for i, (val, label, color) in enumerate(cells):
     cx = PAD + i * cell_w + cell_w // 2
     vy = H_HEADER + 34
-    line(f'<text x="{cx}" y="{vy}" font-family="\'Segoe UI\',system-ui,sans-serif" '
-         f'font-size="21" font-weight="700" fill="{color}" text-anchor="middle">{esc(val)}</text>')
-    line(f'<text x="{cx}" y="{vy + 17}" font-family="\'Segoe UI\',system-ui,sans-serif" '
+    line(f'<text x="{cx}" y="{vy}" font-family="\'Monaspace Neon\',\'Monaspace Argon\',\'Cascadia Code\',\'SF Mono\',ui-monospace,monospace" '
+         f'font-size="17" font-weight="700" fill="{color}" text-anchor="middle">{esc(val)}</text>')
+    line(f'<text x="{cx}" y="{vy + 17}" font-family="\'Monaspace Neon\',\'Monaspace Argon\',\'Cascadia Code\',\'SF Mono\',ui-monospace,monospace" '
          f'font-size="9" fill="{TEXT2}" text-anchor="middle" letter-spacing="0.5">{esc(label)}</text>')
 
 # divider
@@ -187,7 +187,7 @@ line(f'<line x1="{PAD}" y1="{y}" x2="{W - PAD}" y2="{y}" stroke="{BORDER}"/>')
 
 # ── languages
 y = H_HEADER + H_STATS + 18
-line(f'<text x="{PAD}" y="{y}" font-family="\'Segoe UI\',system-ui,sans-serif" '
+line(f'<text x="{PAD}" y="{y}" font-family="\'Monaspace Neon\',\'Monaspace Argon\',\'Cascadia Code\',\'SF Mono\',ui-monospace,monospace" '
      f'font-size="9" font-weight="700" fill="{TEXT2}" letter-spacing="2.5">LANGUAGES</text>')
 
 name_w  = 108
@@ -202,14 +202,14 @@ if top_langs:
         fill    = LANG_COLORS.get(lang, TEXT2)
         track_x = PAD + name_w
         filled  = max(3, round(bar_w * pct / 100))
-        line(f'<text x="{PAD}" y="{ly + 4}" font-family="\'Segoe UI\',system-ui,sans-serif" '
+        line(f'<text x="{PAD}" y="{ly + 4}" font-family="\'Monaspace Neon\',\'Monaspace Argon\',\'Cascadia Code\',\'SF Mono\',ui-monospace,monospace" '
              f'font-size="11" fill="{WHITE}">{esc(lang)}</text>')
         line(f'<rect x="{track_x}" y="{ly - 1}" width="{bar_w}" height="{bar_h}" rx="2" fill="{BORDER}"/>')
         line(f'<rect x="{track_x}" y="{ly - 1}" width="{filled}" height="{bar_h}" rx="2" fill="{fill}"/>')
-        line(f'<text x="{W - PAD}" y="{ly + 4}" font-family="\'Courier New\',Consolas,monospace" '
+        line(f'<text x="{W - PAD}" y="{ly + 4}" font-family="\'Monaspace Neon\',\'Monaspace Argon\',\'Cascadia Code\',\'SF Mono\',ui-monospace,monospace" '
              f'font-size="10" fill="{TEXT2}" text-anchor="end">{pct}%</text>')
 else:
-    line(f'<text x="{PAD}" y="{y + 20}" font-family="\'Segoe UI\',system-ui,sans-serif" '
+    line(f'<text x="{PAD}" y="{y + 20}" font-family="\'Monaspace Neon\',\'Monaspace Argon\',\'Cascadia Code\',\'SF Mono\',ui-monospace,monospace" '
          f'font-size="11" fill="{TEXT2}">No activity in this period</text>')
 
 # ── top repos
@@ -217,7 +217,7 @@ if top_repos:
     y = H_HEADER + H_STATS + H_LANGS
     line(f'<line x1="{PAD}" y1="{y}" x2="{W - PAD}" y2="{y}" stroke="{BORDER}"/>')
     y += 18
-    line(f'<text x="{PAD}" y="{y}" font-family="\'Segoe UI\',system-ui,sans-serif" '
+    line(f'<text x="{PAD}" y="{y}" font-family="\'Monaspace Neon\',\'Monaspace Argon\',\'Cascadia Code\',\'SF Mono\',ui-monospace,monospace" '
          f'font-size="9" font-weight="700" fill="{TEXT2}" letter-spacing="2.5">TOP REPOS</text>')
     for i, (repo, s) in enumerate(top_repos):
         ry    = y + 16 + i * 24
@@ -225,9 +225,9 @@ if top_repos:
         add_s = f'+{fmt(s["add"])}'
         del_s = f'-{fmt(s["del"])}'
         commits_s = f'{s["commits"]}c'
-        line(f'<text x="{PAD}" y="{ry + 4}" font-family="\'Segoe UI\',system-ui,sans-serif" '
+        line(f'<text x="{PAD}" y="{ry + 4}" font-family="\'Monaspace Neon\',\'Monaspace Argon\',\'Cascadia Code\',\'SF Mono\',ui-monospace,monospace" '
              f'font-size="12" fill="{WHITE}">{esc(short)}</text>')
-        line(f'<text x="{W - PAD}" y="{ry + 4}" font-family="\'Courier New\',Consolas,monospace" '
+        line(f'<text x="{W - PAD}" y="{ry + 4}" font-family="\'Monaspace Neon\',\'Monaspace Argon\',\'Cascadia Code\',\'SF Mono\',ui-monospace,monospace" '
              f'font-size="10" fill="{TEXT3}" text-anchor="end">'
              f'<tspan fill="{GREEN}">{esc(add_s)}</tspan>  '
              f'<tspan fill="{RED}">{esc(del_s)}</tspan>  '
