@@ -10,12 +10,11 @@ from datetime import datetime, timedelta, timezone
 # ── config ────────────────────────────────────────────────────────────────────
 TOKEN    = os.environ.get('STATS_TOKEN') or os.environ.get('GITHUB_TOKEN', '')
 USERNAME = os.environ.get('GITHUB_USERNAME', 'senshastic')
-DAYS     = int(os.environ.get('STATS_DAYS', '7'))
+DAYS     = int(os.environ.get('STATS_DAYS', '30'))
 OUTPUT   = os.environ.get('OUTPUT_FILE', 'stats.svg')
 
 if not TOKEN:
-    print('ERROR: set STATS_TOKEN or GITHUB_TOKEN', file=sys.stderr)
-    sys.exit(1)
+    print('WARNING: no token found, API calls may be rate-limited', file=sys.stderr)
 
 HEADERS = {
     'Authorization': f'token {TOKEN}',

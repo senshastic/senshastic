@@ -26,8 +26,9 @@ jobs:
       - name: Generate stats card
         env:
           STATS_TOKEN:     ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN:    ${{ secrets.GITHUB_TOKEN }}
           GITHUB_USERNAME: senshastic
-          STATS_DAYS:      7
+          STATS_DAYS:      30
           OUTPUT_FILE:     stats.svg
         run: python generate_stats.py
 
