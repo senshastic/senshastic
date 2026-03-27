@@ -43,18 +43,13 @@ jobs:
               e.type === 'PushEvent' && e.created_at >= since
             );
             console.log(`PushEvents in last ${DAYS} days: ${pushEvents.length}`);
-            if (pushEvents[0]) console.log(`First push event payload keys: ${JSON.stringify(Object.keys(pushEvents[0].payload || {}))}`);
-            if (pushEvents[0]) console.log(`First push event payload sample: ${JSON.stringify(pushEvents[0].payload).slice(0, 500)}`);
-
-            // collect repo → [sha]
+            // collect repo → [sha] using head SHA from each push event
             const repoCommits = {};
             for (const e of pushEvents) {
               const repo = e.repo.name;
-              for (const c of e.payload.commits || []) {
-                (repoCommits[repo] = repoCommits[repo] || []).push(c.sha);
-              }
+              const sha = e.payload.head;
+              if (sha) (repoCommits[repo] = repoCommits[repo] || []).push(sha);
             }
-            console.log(`Repos with commits: ${JSON.stringify(Object.keys(repoCommits))}`);
 
             // ── commit stats ──────────────────────────────────────────────────
             let totalAdd = 0, totalDel = 0, totalCommits = 0;
