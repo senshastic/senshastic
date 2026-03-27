@@ -2,8 +2,8 @@ name: Update Coding Stats
 
 on:
   schedule:
-    - cron: '0 4 * * 1'   # every Monday at 4am UTC (covers the past week)
-  workflow_dispatch:        # manual trigger from Actions tab
+    - cron: '0 4 * * 1'   # every Monday 4am UTC
+  workflow_dispatch:
 
 jobs:
   generate:
@@ -12,30 +12,172 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout profile repo
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Generate stats SVG
+        uses: actions/github-script@v7
         with:
-          python-version: '3.12'
+          github-token: ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const USERNAME = 'senshastic';
+            const DAYS = 30;
 
-      - name: Install dependencies
-        run: pip install requests
+            const since = new Date(Date.now() - DAYS * 86400000).toISOString();
+            const fmtDate = d => new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+            const period  = `${fmtDate(since)} – ${fmtDate(new Date())}`;
+            const fmt     = n => n >= 1000 ? n.toLocaleString() : String(n);
 
-      - name: Generate stats card
-        env:
-          STATS_TOKEN:     ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN:    ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_USERNAME: senshastic
-          STATS_DAYS:      30
-          OUTPUT_FILE:     stats.svg
-        run: python generate_stats.py
+            // ── push events ──────────────────────────────────────────────────
+            const { data: events } = await github.rest.activity.listPublicEventsForUser({
+              username: USERNAME, per_page: 100
+            });
 
-      - name: Commit updated card
+            const pushEvents = events.filter(e =>
+              e.type === 'PushEvent' && e.created_at >= since
+            );
+
+            // collect repo → [sha]
+            const repoCommits = {};
+            for (const e of pushEvents) {
+              const repo = e.repo.name;
+              for (const c of e.payload.commits || []) {
+                (repoCommits[repo] = repoCommits[repo] || []).push(c.sha);
+              }
+            }
+
+            // ── commit stats ──────────────────────────────────────────────────
+            let totalAdd = 0, totalDel = 0, totalCommits = 0;
+            const repoStats = {};
+
+            for (const [fullRepo, shas] of Object.entries(repoCommits)) {
+              const [owner, repo] = fullRepo.split('/');
+              let radd = 0, rdel = 0;
+              const seen = [...new Set(shas)].slice(0, 10);
+              for (const sha of seen) {
+                try {
+                  const { data } = await github.rest.repos.getCommit({ owner, repo, ref: sha });
+                  radd += data.stats?.additions || 0;
+                  rdel += data.stats?.deletions || 0;
+                } catch (_) {}
+              }
+              repoStats[fullRepo] = { add: radd, del: rdel, commits: shas.length };
+              totalAdd += radd; totalDel += rdel; totalCommits += shas.length;
+            }
+
+            // ── language breakdown ────────────────────────────────────────────
+            const langBytes = {};
+            for (const fullRepo of Object.keys(repoCommits)) {
+              const [owner, repo] = fullRepo.split('/');
+              try {
+                const { data } = await github.rest.repos.listLanguages({ owner, repo });
+                for (const [lang, b] of Object.entries(data)) {
+                  langBytes[lang] = (langBytes[lang] || 0) + b;
+                }
+              } catch (_) {}
+            }
+            const totalLB = Object.values(langBytes).reduce((a,b)=>a+b,0) || 1;
+            const topLangs = Object.entries(langBytes).sort((a,b)=>b[1]-a[1]).slice(0,5);
+
+            // ── top repos ─────────────────────────────────────────────────────
+            const topRepos = Object.entries(repoStats)
+              .sort((a,b) => (b[1].add+b[1].del) - (a[1].add+a[1].del))
+              .slice(0,5);
+
+            console.log(`+${totalAdd} / -${totalDel}, ${Object.keys(repoCommits).length} repos, ${totalCommits} commits`);
+
+            // ── SVG ───────────────────────────────────────────────────────────
+            const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+            const BG='#0d0d0d', BORDER='#242424', GOLD='#f5c518', WHITE='#e0e0e0';
+            const TEXT2='#888888', TEXT3='#3a3a3a', GREEN='#3ddc84', RED='#e8433a', BLUE='#4a9eff';
+            const LANG_COLORS = {
+              JavaScript:'#f1e05a', TypeScript:'#3178c6', Python:'#3572A5',
+              HTML:'#e34c26', CSS:'#563d7c', SCSS:'#c6538c', Shell:'#89e051',
+              Rust:'#dea584', Go:'#00ADD8', Java:'#b07219', 'C++':'#f34b7d',
+              C:'#555555', Ruby:'#701516', PHP:'#4F5D95', Kotlin:'#A97BFF',
+              Vue:'#41b883', Svelte:'#ff3e00', Lua:'#000080',
+            };
+
+            const W=600, PAD=24;
+            const H_HEADER=56, H_STATS=78;
+            const H_LANGS = 34 + Math.max(topLangs.length,1)*26 + 10;
+            const H_REPOS = topRepos.length ? 32 + topRepos.length*24 + 10 : 0;
+            const H = H_HEADER + H_STATS + H_LANGS + H_REPOS + 18;
+
+            const lines = [];
+            const add = s => lines.push(s);
+
+            add(`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`);
+            add(`<rect width="${W}" height="${H}" rx="6" fill="${BG}" stroke="${BORDER}" stroke-width="1"/>`);
+            add(`<rect x="0" y="0" width="72" height="3" rx="1" fill="${GOLD}"/>`);
+            add(`<rect x="74" y="0" width="18" height="3" rx="1" fill="${TEXT3}"/>`);
+            add(`<rect x="94" y="0" width="36" height="3" rx="1" fill="${BORDER}"/>`);
+
+            // header
+            add(`<text x="${PAD}" y="35" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" font-weight="700" fill="${GOLD}" letter-spacing="2.5">CODING STATS · LAST ${DAYS} DAYS</text>`);
+            add(`<text x="${W-PAD}" y="35" font-family="'Courier New',Consolas,monospace" font-size="10" fill="${TEXT2}" text-anchor="end">${esc(period)}</text>`);
+            add(`<line x1="${PAD}" y1="${H_HEADER}" x2="${W-PAD}" y2="${H_HEADER}" stroke="${BORDER}"/>`);
+
+            // stats row
+            const cells = [
+              [`+${fmt(totalAdd)}`, 'lines added',   GREEN],
+              [`-${fmt(totalDel)}`, 'lines removed', RED],
+              [String(Object.keys(repoCommits).length), 'repos', BLUE],
+              [String(totalCommits), 'commits', GOLD],
+            ];
+            const cw = (W - PAD*2) / 4;
+            for (const [i, [val, label, color]] of cells.entries()) {
+              const cx = PAD + i*cw + cw/2;
+              add(`<text x="${cx}" y="${H_HEADER+34}" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="${color}" text-anchor="middle">${esc(val)}</text>`);
+              add(`<text x="${cx}" y="${H_HEADER+51}" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="${TEXT2}" text-anchor="middle" letter-spacing="0.5">${esc(label)}</text>`);
+            }
+            add(`<line x1="${PAD}" y1="${H_HEADER+H_STATS}" x2="${W-PAD}" y2="${H_HEADER+H_STATS}" stroke="${BORDER}"/>`);
+
+            // languages
+            let y = H_HEADER + H_STATS + 18;
+            add(`<text x="${PAD}" y="${y}" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-weight="700" fill="${TEXT2}" letter-spacing="2.5">LANGUAGES</text>`);
+            const nameW=108, pctW=36, barW=W-PAD*2-nameW-pctW;
+            if (topLangs.length) {
+              for (const [i, [lang, b]] of topLangs.entries()) {
+                const ly = y + 16 + i*26;
+                const pct = Math.round(b/totalLB*100);
+                const fill = LANG_COLORS[lang] || TEXT2;
+                const tx = PAD + nameW;
+                const filled = Math.max(3, Math.round(barW * pct/100));
+                add(`<text x="${PAD}" y="${ly+4}" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${WHITE}">${esc(lang)}</text>`);
+                add(`<rect x="${tx}" y="${ly-1}" width="${barW}" height="5" rx="2" fill="${BORDER}"/>`);
+                add(`<rect x="${tx}" y="${ly-1}" width="${filled}" height="5" rx="2" fill="${fill}"/>`);
+                add(`<text x="${W-PAD}" y="${ly+4}" font-family="'Courier New',Consolas,monospace" font-size="10" fill="${TEXT2}" text-anchor="end">${pct}%</text>`);
+              }
+            } else {
+              add(`<text x="${PAD}" y="${y+20}" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${TEXT2}">No public activity in this period</text>`);
+            }
+
+            // top repos
+            if (topRepos.length) {
+              const ry0 = H_HEADER + H_STATS + H_LANGS;
+              add(`<line x1="${PAD}" y1="${ry0}" x2="${W-PAD}" y2="${ry0}" stroke="${BORDER}"/>`);
+              let ry = ry0 + 18;
+              add(`<text x="${PAD}" y="${ry}" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-weight="700" fill="${TEXT2}" letter-spacing="2.5">TOP REPOS</text>`);
+              for (const [i, [repo, s]] of topRepos.entries()) {
+                const rowY = ry + 16 + i*24;
+                const short = repo.split('/')[1];
+                add(`<text x="${PAD}" y="${rowY+4}" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="${WHITE}">${esc(short)}</text>`);
+                add(`<text x="${W-PAD}" y="${rowY+4}" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="${GREEN}">+${fmt(s.add)}</tspan>  <tspan fill="${RED}">-${fmt(s.del)}</tspan>  <tspan fill="${TEXT2}">${s.commits}c</tspan></text>`);
+              }
+            }
+
+            add('</svg>');
+
+            fs.writeFileSync('stats.svg', lines.join('\n'));
+            console.log(`Written stats.svg (${H}px)`);
+
+      - name: Commit
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add stats.svg
-          git diff --cached --quiet || git commit -m "chore: update weekly coding stats [skip ci]"
+          git diff --cached --quiet || git commit -m "chore: update coding stats [skip ci]"
           git push
