@@ -94,86 +94,195 @@ jobs:
             // ── SVG ───────────────────────────────────────────────────────────
             const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-            const BG='#0d0d0d', BORDER='#242424', GOLD='#f5c518', WHITE='#e0e0e0';
-            const TEXT2='#888888', TEXT3='#3a3a3a', GREEN='#3ddc84', RED='#e8433a', BLUE='#4a9eff';
+            const CYAN   = '#00d4ff';
+            const PURPLE = '#a855f7';
+            const GREEN  = '#10b981';
+            const RED    = '#ef4444';
+            const GOLD   = '#f59e0b';
+            const WHITE  = '#f1f5f9';
+            const SUB    = '#4b5563';
+            const SUBL   = '#6b7280';
+
             const LANG_COLORS = {
               JavaScript:'#f1e05a', TypeScript:'#3178c6', Python:'#3572A5',
               HTML:'#e34c26', CSS:'#563d7c', SCSS:'#c6538c', Shell:'#89e051',
               Rust:'#dea584', Go:'#00ADD8', Java:'#b07219', 'C++':'#f34b7d',
               C:'#555555', Ruby:'#701516', PHP:'#4F5D95', Kotlin:'#A97BFF',
-              Vue:'#41b883', Svelte:'#ff3e00', Lua:'#000080',
+              Swift:'#F05138', Dart:'#00B4AB', Vue:'#41b883', Svelte:'#ff3e00',
+              Lua:'#000080',
             };
 
-            const W=600, PAD=24;
-            const H_HEADER=56, H_STATS=78;
-            const H_LANGS = 34 + Math.max(topLangs.length,1)*26 + 10;
-            const H_REPOS = topRepos.length ? 32 + topRepos.length*24 + 10 : 0;
-            const H = H_HEADER + H_STATS + H_LANGS + H_REPOS + 18;
+            const W = 600, PAD = 24;
+            const H_HEADER = 62;
+            const H_STATS  = 100;
+            const H_LANGS  = 44 + Math.max(topLangs.length,1)*30 + 12;
+            const H_REPOS  = topRepos.length ? 44 + topRepos.length*30 + 12 : 0;
+            const H_FOOT   = 30;
+            const H = H_HEADER + H_STATS + H_LANGS + H_REPOS + H_FOOT;
 
             const lines = [];
             const add = s => lines.push(s);
 
             add(`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`);
-            add(`<rect width="${W}" height="${H}" rx="6" fill="${BG}" stroke="${BORDER}" stroke-width="1"/>`);
-            add(`<rect x="0" y="0" width="72" height="3" rx="1" fill="${GOLD}"/>`);
-            add(`<rect x="74" y="0" width="18" height="3" rx="1" fill="${TEXT3}"/>`);
-            add(`<rect x="94" y="0" width="36" height="3" rx="1" fill="${BORDER}"/>`);
 
-            // header
-            add(`<text x="${PAD}" y="35" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" font-weight="700" fill="${GOLD}" letter-spacing="2.5">CODING STATS · LAST ${DAYS} DAYS</text>`);
-            add(`<text x="${W-PAD}" y="35" font-family="'Courier New',Consolas,monospace" font-size="10" fill="${TEXT2}" text-anchor="end">${esc(period)}</text>`);
-            add(`<line x1="${PAD}" y1="${H_HEADER}" x2="${W-PAD}" y2="${H_HEADER}" stroke="${BORDER}"/>`);
+            // ── defs ──────────────────────────────────────────────────────────
+            add(`<defs>`);
 
-            // stats row
+            // CSS animations
+            add(`<style>
+  @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.65} }
+  @keyframes fadein { from{opacity:0} to{opacity:1} }
+  .anim-1 { animation: pulse 4s ease-in-out infinite; }
+  .anim-2 { animation: pulse 4s ease-in-out infinite 0.8s; }
+  .anim-3 { animation: pulse 4s ease-in-out infinite 1.6s; }
+  .anim-4 { animation: pulse 4s ease-in-out infinite 2.4s; }
+  .card   { animation: fadein 0.6s ease-out both; }
+</style>`);
+
+            // background gradient
+            add(`<linearGradient id="bgGrad" x1="0" y1="0" x2="0.4" y2="1">
+  <stop offset="0%" stop-color="#0f0f1a"/>
+  <stop offset="100%" stop-color="#080810"/>
+</linearGradient>`);
+
+            // top accent gradient
+            add(`<linearGradient id="accentGrad" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="${PURPLE}"/>
+  <stop offset="50%"  stop-color="${CYAN}"/>
+  <stop offset="100%" stop-color="${GREEN}"/>
+</linearGradient>`);
+
+            // fade divider gradient
+            add(`<linearGradient id="divGrad" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="${PURPLE}" stop-opacity="0"/>
+  <stop offset="25%"  stop-color="${PURPLE}" stop-opacity="0.7"/>
+  <stop offset="75%"  stop-color="${CYAN}"   stop-opacity="0.7"/>
+  <stop offset="100%" stop-color="${CYAN}"   stop-opacity="0"/>
+</linearGradient>`);
+
+            // top radial glow
+            add(`<radialGradient id="topGlow" cx="50%" cy="0%" r="70%" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${W}" y2="${H}">
+  <stop offset="0%"   stop-color="${PURPLE}" stop-opacity="0.12"/>
+  <stop offset="100%" stop-color="${PURPLE}" stop-opacity="0"/>
+</radialGradient>`);
+
+            // dot grid pattern
+            add(`<pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+  <circle cx="0.8" cy="0.8" r="0.8" fill="#ffffff" opacity="0.045"/>
+</pattern>`);
+
+            // glow filter (for numbers)
+            add(`<filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>`);
+
+            // per-language bar gradients
+            for (const [lang] of topLangs) {
+              const c = LANG_COLORS[lang] || SUBL;
+              const id = `lg${lang.replace(/[^a-z0-9]/gi,'_')}`;
+              add(`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="${c}" stop-opacity="1"/>
+  <stop offset="100%" stop-color="${c}" stop-opacity="0.35"/>
+</linearGradient>`);
+            }
+
+            // clip path
+            add(`<clipPath id="clip"><rect width="${W}" height="${H}" rx="14"/></clipPath>`);
+            add(`</defs>`);
+
+            // ── card base ─────────────────────────────────────────────────────
+            add(`<g class="card">`);
+            add(`<g clip-path="url(#clip)">`);
+            add(`<rect width="${W}" height="${H}" fill="url(#bgGrad)"/>`);
+            add(`<rect width="${W}" height="${H}" fill="url(#dots)"/>`);
+            add(`<rect width="${W}" height="${H}" fill="url(#topGlow)"/>`);
+            add(`</g>`);
+
+            // border
+            add(`<rect width="${W}" height="${H}" rx="14" fill="none" stroke="url(#accentGrad)" stroke-width="1" stroke-opacity="0.25"/>`);
+
+            // top accent bar
+            add(`<rect x="0" y="0" width="${W}" height="3" rx="0" fill="url(#accentGrad)" clip-path="url(#clip)"/>`);
+
+            // tech corner brackets
+            const B = 14;
+            add(`<path d="M${PAD} ${8+B} L${PAD} ${8} L${PAD+B} ${8}" fill="none" stroke="${CYAN}" stroke-width="1.2" opacity="0.4"/>`);
+            add(`<path d="M${W-PAD-B} ${8} L${W-PAD} ${8} L${W-PAD} ${8+B}" fill="none" stroke="${CYAN}" stroke-width="1.2" opacity="0.4"/>`);
+            add(`<path d="M${PAD} ${H-8-B} L${PAD} ${H-8} L${PAD+B} ${H-8}" fill="none" stroke="${CYAN}" stroke-width="1.2" opacity="0.4"/>`);
+            add(`<path d="M${W-PAD-B} ${H-8} L${W-PAD} ${H-8} L${W-PAD} ${H-8-B}" fill="none" stroke="${CYAN}" stroke-width="1.2" opacity="0.4"/>`);
+
+            // ── header ────────────────────────────────────────────────────────
+            add(`<text x="${PAD}" y="38" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" font-weight="700" fill="${CYAN}" letter-spacing="3" filter="url(#glow)">CODING STATS</text>`);
+            add(`<text x="${PAD+138}" y="38" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${SUBL}" letter-spacing="2">· LAST ${DAYS} DAYS</text>`);
+            add(`<text x="${W-PAD}" y="38" font-family="'Courier New',Consolas,monospace" font-size="10" fill="${SUBL}" text-anchor="end">${esc(period)}</text>`);
+            add(`<rect x="${PAD}" y="${H_HEADER}" width="${W-PAD*2}" height="1" fill="url(#divGrad)"/>`);
+
+            // ── stats row ─────────────────────────────────────────────────────
             const cells = [
-              [`+${fmt(totalAdd)}`, 'lines added',   GREEN],
-              [`-${fmt(totalDel)}`, 'lines removed', RED],
-              [String(Object.keys(repoCommits).length), 'repos', BLUE],
-              [String(totalCommits), 'commits', GOLD],
+              [`+${fmt(totalAdd)}`, 'LINES ADDED',   GREEN,  'anim-1'],
+              [`-${fmt(totalDel)}`, 'LINES REMOVED', RED,    'anim-2'],
+              [String(Object.keys(repoCommits).length), 'REPOS', CYAN, 'anim-3'],
+              [String(totalCommits), 'COMMITS',      GOLD,   'anim-4'],
             ];
             const cw = (W - PAD*2) / 4;
-            for (const [i, [val, label, color]] of cells.entries()) {
+            for (const [i, [val, label, color, cls]] of cells.entries()) {
               const cx = PAD + i*cw + cw/2;
-              add(`<text x="${cx}" y="${H_HEADER+34}" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="${color}" text-anchor="middle">${esc(val)}</text>`);
-              add(`<text x="${cx}" y="${H_HEADER+51}" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="${TEXT2}" text-anchor="middle" letter-spacing="0.5">${esc(label)}</text>`);
+              const cellX = PAD + i*cw + 5;
+              const cellY = H_HEADER + 10;
+              const cellW = cw - 10;
+              const cellH = H_STATS - 20;
+              // glass cell
+              add(`<rect x="${cellX}" y="${cellY}" width="${cellW}" height="${cellH}" rx="8" fill="${color}" fill-opacity="0.06" stroke="${color}" stroke-opacity="0.2" stroke-width="1"/>`);
+              // value
+              add(`<text x="${cx}" y="${H_HEADER+52}" font-family="'Segoe UI',system-ui,sans-serif" font-size="24" font-weight="700" fill="${color}" text-anchor="middle" filter="url(#glow)" class="${cls}">${esc(val)}</text>`);
+              // label
+              add(`<text x="${cx}" y="${H_HEADER+72}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="${SUBL}" text-anchor="middle" letter-spacing="1.5">${label}</text>`);
             }
-            add(`<line x1="${PAD}" y1="${H_HEADER+H_STATS}" x2="${W-PAD}" y2="${H_HEADER+H_STATS}" stroke="${BORDER}"/>`);
+            add(`<rect x="${PAD}" y="${H_HEADER+H_STATS}" width="${W-PAD*2}" height="1" fill="url(#divGrad)"/>`);
 
-            // languages
-            let y = H_HEADER + H_STATS + 18;
-            add(`<text x="${PAD}" y="${y}" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-weight="700" fill="${TEXT2}" letter-spacing="2.5">LANGUAGES</text>`);
-            const nameW=108, pctW=36, barW=W-PAD*2-nameW-pctW;
+            // ── languages ─────────────────────────────────────────────────────
+            let y = H_HEADER + H_STATS + 22;
+            add(`<text x="${PAD}" y="${y}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" font-weight="700" fill="${SUBL}" letter-spacing="3">LANGUAGES</text>`);
+            const nameW = 110, pctW = 40, barW = W-PAD*2-nameW-pctW, barH = 6;
             if (topLangs.length) {
               for (const [i, [lang, b]] of topLangs.entries()) {
-                const ly = y + 16 + i*26;
-                const pct = Math.round(b/totalLB*100);
-                const fill = LANG_COLORS[lang] || TEXT2;
-                const tx = PAD + nameW;
-                const filled = Math.max(3, Math.round(barW * pct/100));
-                add(`<text x="${PAD}" y="${ly+4}" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${WHITE}">${esc(lang)}</text>`);
-                add(`<rect x="${tx}" y="${ly-1}" width="${barW}" height="5" rx="2" fill="${BORDER}"/>`);
-                add(`<rect x="${tx}" y="${ly-1}" width="${filled}" height="5" rx="2" fill="${fill}"/>`);
-                add(`<text x="${W-PAD}" y="${ly+4}" font-family="'Courier New',Consolas,monospace" font-size="10" fill="${TEXT2}" text-anchor="end">${pct}%</text>`);
+                const ly    = y + 20 + i*30;
+                const pct   = Math.round(b/totalLB*100);
+                const lc    = LANG_COLORS[lang] || SUBL;
+                const gid   = `lg${lang.replace(/[^a-z0-9]/gi,'_')}`;
+                const tx    = PAD + nameW;
+                const filled = Math.max(5, Math.round(barW * pct/100));
+                add(`<circle cx="${PAD+5}" cy="${ly+3}" r="4" fill="${lc}" opacity="0.85"/>`);
+                add(`<text x="${PAD+14}" y="${ly+7}" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${WHITE}">${esc(lang)}</text>`);
+                add(`<rect x="${tx}" y="${ly}" width="${barW}" height="${barH}" rx="3" fill="#ffffff" fill-opacity="0.05"/>`);
+                add(`<rect x="${tx}" y="${ly}" width="${filled}" height="${barH}" rx="3" fill="url(#${gid})"/>`);
+                add(`<text x="${W-PAD}" y="${ly+7}" font-family="'Courier New',Consolas,monospace" font-size="10" fill="${SUBL}" text-anchor="end">${pct}%</text>`);
               }
             } else {
-              add(`<text x="${PAD}" y="${y+20}" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${TEXT2}">No public activity in this period</text>`);
+              add(`<text x="${PAD}" y="${y+22}" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${SUBL}">No activity this period</text>`);
             }
 
-            // top repos
+            // ── top repos ─────────────────────────────────────────────────────
             if (topRepos.length) {
               const ry0 = H_HEADER + H_STATS + H_LANGS;
-              add(`<line x1="${PAD}" y1="${ry0}" x2="${W-PAD}" y2="${ry0}" stroke="${BORDER}"/>`);
-              let ry = ry0 + 18;
-              add(`<text x="${PAD}" y="${ry}" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-weight="700" fill="${TEXT2}" letter-spacing="2.5">TOP REPOS</text>`);
+              add(`<rect x="${PAD}" y="${ry0}" width="${W-PAD*2}" height="1" fill="url(#divGrad)"/>`);
+              let ry = ry0 + 22;
+              add(`<text x="${PAD}" y="${ry}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" font-weight="700" fill="${SUBL}" letter-spacing="3">TOP REPOS</text>`);
               for (const [i, [repo, s]] of topRepos.entries()) {
-                const rowY = ry + 16 + i*24;
+                const rowY = ry + 20 + i*30;
                 const short = repo.split('/')[1];
-                add(`<text x="${PAD}" y="${rowY+4}" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="${WHITE}">${esc(short)}</text>`);
-                add(`<text x="${W-PAD}" y="${rowY+4}" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="${GREEN}">+${fmt(s.add)}</tspan>  <tspan fill="${RED}">-${fmt(s.del)}</tspan>  <tspan fill="${TEXT2}">${s.commits}c</tspan></text>`);
+                if (i % 2 === 0) add(`<rect x="${PAD}" y="${rowY-11}" width="${W-PAD*2}" height="24" rx="4" fill="#ffffff" fill-opacity="0.025"/>`);
+                add(`<text x="${PAD+4}" y="${rowY+5}" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="${WHITE}">${esc(short)}</text>`);
+                add(`<text x="${W-PAD}" y="${rowY+5}" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="${GREEN}">+${fmt(s.add)}</tspan><tspan fill="${SUB}">  </tspan><tspan fill="${RED}">-${fmt(s.del)}</tspan><tspan fill="${SUB}">  </tspan><tspan fill="${SUBL}">${s.commits}c</tspan></text>`);
               }
             }
 
-            add('</svg>');
+            // ── footer ────────────────────────────────────────────────────────
+            add(`<text x="${W/2}" y="${H-12}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="${SUB}" text-anchor="middle" letter-spacing="2" opacity="0.6">AUTO · UPDATED · WEEKLY</text>`);
+
+            add(`</g>`);
+            add(`</svg>`);
 
             fs.writeFileSync('stats.svg', lines.join('\n'));
             console.log(`Written stats.svg (${H}px)`);
