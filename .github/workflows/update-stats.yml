@@ -43,6 +43,8 @@ jobs:
               e.type === 'PushEvent' && e.created_at >= since
             );
             console.log(`PushEvents in last ${DAYS} days: ${pushEvents.length}`);
+            if (pushEvents[0]) console.log(`First push event payload keys: ${JSON.stringify(Object.keys(pushEvents[0].payload || {}))}`);
+            if (pushEvents[0]) console.log(`First push event payload sample: ${JSON.stringify(pushEvents[0].payload).slice(0, 500)}`);
 
             // collect repo → [sha]
             const repoCommits = {};
