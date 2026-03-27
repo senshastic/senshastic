@@ -126,65 +126,49 @@ jobs:
             add(`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`);
 
             // ── defs ──────────────────────────────────────────────────────────
-            add(`<defs>`);
-
-            // CSS animations
-            add(`<style>
-  @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.65} }
-  @keyframes fadein { from{opacity:0} to{opacity:1} }
-  .anim-1 { animation: pulse 4s ease-in-out infinite; }
-  .anim-2 { animation: pulse 4s ease-in-out infinite 0.8s; }
-  .anim-3 { animation: pulse 4s ease-in-out infinite 1.6s; }
-  .anim-4 { animation: pulse 4s ease-in-out infinite 2.4s; }
-  .card   { animation: fadein 0.6s ease-out both; }
-</style>`);
-
-            // background gradient
-            add(`<linearGradient id="bgGrad" x1="0" y1="0" x2="0.4" y2="1">
-  <stop offset="0%" stop-color="#0f0f1a"/>
-  <stop offset="100%" stop-color="#080810"/>
-</linearGradient>`);
-
-            // top accent gradient
-            add(`<linearGradient id="accentGrad" x1="0" y1="0" x2="1" y2="0">
-  <stop offset="0%"   stop-color="${PURPLE}"/>
-  <stop offset="50%"  stop-color="${CYAN}"/>
-  <stop offset="100%" stop-color="${GREEN}"/>
-</linearGradient>`);
-
-            // fade divider gradient
-            add(`<linearGradient id="divGrad" x1="0" y1="0" x2="1" y2="0">
-  <stop offset="0%"   stop-color="${PURPLE}" stop-opacity="0"/>
-  <stop offset="25%"  stop-color="${PURPLE}" stop-opacity="0.7"/>
-  <stop offset="75%"  stop-color="${CYAN}"   stop-opacity="0.7"/>
-  <stop offset="100%" stop-color="${CYAN}"   stop-opacity="0"/>
-</linearGradient>`);
-
-            // top radial glow
-            add(`<radialGradient id="topGlow" cx="50%" cy="0%" r="70%" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${W}" y2="${H}">
-  <stop offset="0%"   stop-color="${PURPLE}" stop-opacity="0.12"/>
-  <stop offset="100%" stop-color="${PURPLE}" stop-opacity="0"/>
-</radialGradient>`);
-
-            // dot grid pattern
-            add(`<pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
-  <circle cx="0.8" cy="0.8" r="0.8" fill="#ffffff" opacity="0.045"/>
-</pattern>`);
-
-            // glow filter (for numbers)
-            add(`<filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
-  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-</filter>`);
-
-            // per-language bar gradients
+            add('<defs>');
+            add('<style>');
+            add('  @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.65} }');
+            add('  @keyframes fadein { from{opacity:0} to{opacity:1} }');
+            add('  .anim-1 { animation: pulse 4s ease-in-out infinite; }');
+            add('  .anim-2 { animation: pulse 4s ease-in-out infinite 0.8s; }');
+            add('  .anim-3 { animation: pulse 4s ease-in-out infinite 1.6s; }');
+            add('  .anim-4 { animation: pulse 4s ease-in-out infinite 2.4s; }');
+            add('  .card   { animation: fadein 0.6s ease-out both; }');
+            add('</style>');
+            add('<linearGradient id="bgGrad" x1="0" y1="0" x2="0.4" y2="1">');
+            add('  <stop offset="0%"   stop-color="#0f0f1a"/>');
+            add('  <stop offset="100%" stop-color="#080810"/>');
+            add('</linearGradient>');
+            add(`<linearGradient id="accentGrad" x1="0" y1="0" x2="1" y2="0">`);
+            add(`  <stop offset="0%"   stop-color="${PURPLE}"/>`);
+            add(`  <stop offset="50%"  stop-color="${CYAN}"/>`);
+            add(`  <stop offset="100%" stop-color="${GREEN}"/>`);
+            add('</linearGradient>');
+            add(`<linearGradient id="divGrad" x1="0" y1="0" x2="1" y2="0">`);
+            add(`  <stop offset="0%"   stop-color="${PURPLE}" stop-opacity="0"/>`);
+            add(`  <stop offset="25%"  stop-color="${PURPLE}" stop-opacity="0.7"/>`);
+            add(`  <stop offset="75%"  stop-color="${CYAN}"   stop-opacity="0.7"/>`);
+            add(`  <stop offset="100%" stop-color="${CYAN}"   stop-opacity="0"/>`);
+            add('</linearGradient>');
+            add(`<radialGradient id="topGlow" cx="50%" cy="0%" r="70%" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${W}" y2="${H}">`);
+            add(`  <stop offset="0%"   stop-color="${PURPLE}" stop-opacity="0.12"/>`);
+            add(`  <stop offset="100%" stop-color="${PURPLE}" stop-opacity="0"/>`);
+            add('</radialGradient>');
+            add('<pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">');
+            add('  <circle cx="0.8" cy="0.8" r="0.8" fill="#ffffff" opacity="0.045"/>');
+            add('</pattern>');
+            add('<filter id="glow" x="-30%" y="-30%" width="160%" height="160%">');
+            add('  <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>');
+            add('  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>');
+            add('</filter>');
             for (const [lang] of topLangs) {
               const c = LANG_COLORS[lang] || SUBL;
               const id = `lg${lang.replace(/[^a-z0-9]/gi,'_')}`;
-              add(`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="0">
-  <stop offset="0%"   stop-color="${c}" stop-opacity="1"/>
-  <stop offset="100%" stop-color="${c}" stop-opacity="0.35"/>
-</linearGradient>`);
+              add(`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="0">`);
+              add(`  <stop offset="0%"   stop-color="${c}" stop-opacity="1"/>`);
+              add(`  <stop offset="100%" stop-color="${c}" stop-opacity="0.35"/>`);
+              add('</linearGradient>');
             }
 
             // clip path
