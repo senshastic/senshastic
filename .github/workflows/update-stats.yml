@@ -112,13 +112,16 @@ jobs:
               Lua:'#000080',
             };
 
-            const W = 600, PAD = 24;
-            const H_HEADER = 62;
-            const H_STATS  = 100;
-            const H_LANGS  = 44 + Math.max(topLangs.length,1)*30 + 12;
-            const H_REPOS  = topRepos.length ? 44 + topRepos.length*30 + 12 : 0;
-            const H_FOOT   = 30;
-            const H = H_HEADER + H_STATS + H_LANGS + H_REPOS + H_FOOT;
+            const W = 860, PAD = 32;
+            const H_HEADER  = 66;
+            const H_STATS   = 110;
+            const COL_GAP   = 24;
+            const COL_W     = Math.floor((W - PAD*2 - COL_GAP) / 2);
+            const H_LANGS_C = 44 + Math.max(topLangs.length,1)*32 + 12;
+            const H_REPOS_C = topRepos.length ? 44 + topRepos.length*32 + 12 : 0;
+            const H_BOTTOM  = Math.max(H_LANGS_C, H_REPOS_C || H_LANGS_C);
+            const H_FOOT    = 32;
+            const H = H_HEADER + H_STATS + H_BOTTOM + H_FOOT;
 
             const lines = [];
             const add = s => lines.push(s);
@@ -197,9 +200,9 @@ jobs:
             add(`<path d="M${W-PAD-B} ${H-8} L${W-PAD} ${H-8} L${W-PAD} ${H-8-B}" fill="none" stroke="${CYAN}" stroke-width="1.2" opacity="0.4"/>`);
 
             // ── header ────────────────────────────────────────────────────────
-            add(`<text x="${PAD}" y="38" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" font-weight="700" fill="${CYAN}" letter-spacing="3" filter="url(#glow)">CODING STATS</text>`);
-            add(`<text x="${PAD+138}" y="38" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${SUBL}" letter-spacing="2">· LAST ${DAYS} DAYS</text>`);
-            add(`<text x="${W-PAD}" y="38" font-family="'Courier New',Consolas,monospace" font-size="10" fill="${SUBL}" text-anchor="end">${esc(period)}</text>`);
+            add(`<text x="${PAD}" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="13" font-weight="700" fill="${CYAN}" letter-spacing="3.5" filter="url(#glow)">CODING STATS</text>`);
+            add(`<text x="${PAD+152}" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="${SUBL}" letter-spacing="2">· LAST ${DAYS} DAYS</text>`);
+            add(`<text x="${W-PAD}" y="41" font-family="'Courier New',Consolas,monospace" font-size="10" fill="${SUBL}" text-anchor="end">${esc(period)}</text>`);
             add(`<rect x="${PAD}" y="${H_HEADER}" width="${W-PAD*2}" height="1" fill="url(#divGrad)"/>`);
 
             // ── stats row ─────────────────────────────────────────────────────
@@ -212,58 +215,61 @@ jobs:
             const cw = (W - PAD*2) / 4;
             for (const [i, [val, label, color, cls]] of cells.entries()) {
               const cx = PAD + i*cw + cw/2;
-              const cellX = PAD + i*cw + 5;
+              const cellX = PAD + i*cw + 6;
               const cellY = H_HEADER + 10;
-              const cellW = cw - 10;
+              const cellW = cw - 12;
               const cellH = H_STATS - 20;
-              // glass cell
-              add(`<rect x="${cellX}" y="${cellY}" width="${cellW}" height="${cellH}" rx="8" fill="${color}" fill-opacity="0.06" stroke="${color}" stroke-opacity="0.2" stroke-width="1"/>`);
-              // value
-              add(`<text x="${cx}" y="${H_HEADER+52}" font-family="'Segoe UI',system-ui,sans-serif" font-size="24" font-weight="700" fill="${color}" text-anchor="middle" filter="url(#glow)" class="${cls}">${esc(val)}</text>`);
-              // label
-              add(`<text x="${cx}" y="${H_HEADER+72}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="${SUBL}" text-anchor="middle" letter-spacing="1.5">${label}</text>`);
+              add(`<rect x="${cellX}" y="${cellY}" width="${cellW}" height="${cellH}" rx="10" fill="${color}" fill-opacity="0.06" stroke="${color}" stroke-opacity="0.18" stroke-width="1"/>`);
+              add(`<text x="${cx}" y="${H_HEADER+58}" font-family="'Segoe UI',system-ui,sans-serif" font-size="28" font-weight="700" fill="${color}" text-anchor="middle" filter="url(#glow)" class="${cls}">${esc(val)}</text>`);
+              add(`<text x="${cx}" y="${H_HEADER+78}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="${SUBL}" text-anchor="middle" letter-spacing="2">${label}</text>`);
             }
             add(`<rect x="${PAD}" y="${H_HEADER+H_STATS}" width="${W-PAD*2}" height="1" fill="url(#divGrad)"/>`);
 
-            // ── languages ─────────────────────────────────────────────────────
-            let y = H_HEADER + H_STATS + 22;
-            add(`<text x="${PAD}" y="${y}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" font-weight="700" fill="${SUBL}" letter-spacing="3">LANGUAGES</text>`);
-            const nameW = 110, pctW = 40, barW = W-PAD*2-nameW-pctW, barH = 6;
+            // ── 2-column bottom: languages (left) + repos (right) ─────────────
+            const colTop = H_HEADER + H_STATS;
+            const LX = PAD;
+            const RX = PAD + COL_W + COL_GAP;
+
+            // vertical column divider
+            add(`<line x1="${PAD+COL_W+COL_GAP/2}" y1="${colTop+16}" x2="${PAD+COL_W+COL_GAP/2}" y2="${colTop+H_BOTTOM-16}" stroke="${PURPLE}" stroke-opacity="0.2" stroke-width="1" stroke-dasharray="3,4"/>`);
+
+            // ── languages (left column) ───────────────────────────────────────
+            let ly0 = colTop + 22;
+            add(`<text x="${LX}" y="${ly0}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" font-weight="700" fill="${SUBL}" letter-spacing="3">LANGUAGES</text>`);
+            const nameW = 100, pctW = 36, barW = COL_W - nameW - pctW, barH = 6;
             if (topLangs.length) {
               for (const [i, [lang, b]] of topLangs.entries()) {
-                const ly    = y + 20 + i*30;
-                const pct   = Math.round(b/totalLB*100);
-                const lc    = LANG_COLORS[lang] || SUBL;
-                const gid   = `lg${lang.replace(/[^a-z0-9]/gi,'_')}`;
-                const tx    = PAD + nameW;
-                const filled = Math.max(5, Math.round(barW * pct/100));
-                add(`<circle cx="${PAD+5}" cy="${ly+3}" r="4" fill="${lc}" opacity="0.85"/>`);
-                add(`<text x="${PAD+14}" y="${ly+7}" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${WHITE}">${esc(lang)}</text>`);
+                const ly   = ly0 + 22 + i*32;
+                const pct  = Math.round(b/totalLB*100);
+                const lc   = LANG_COLORS[lang] || SUBL;
+                const gid  = `lg${lang.replace(/[^a-z0-9]/gi,'_')}`;
+                const tx   = LX + nameW;
+                const fill = Math.max(5, Math.round(barW * pct/100));
+                add(`<circle cx="${LX+5}" cy="${ly+3}" r="4" fill="${lc}" opacity="0.85"/>`);
+                add(`<text x="${LX+14}" y="${ly+7}" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${WHITE}">${esc(lang)}</text>`);
                 add(`<rect x="${tx}" y="${ly}" width="${barW}" height="${barH}" rx="3" fill="#ffffff" fill-opacity="0.05"/>`);
-                add(`<rect x="${tx}" y="${ly}" width="${filled}" height="${barH}" rx="3" fill="url(#${gid})"/>`);
-                add(`<text x="${W-PAD}" y="${ly+7}" font-family="'Courier New',Consolas,monospace" font-size="10" fill="${SUBL}" text-anchor="end">${pct}%</text>`);
+                add(`<rect x="${tx}" y="${ly}" width="${fill}" height="${barH}" rx="3" fill="url(#${gid})"/>`);
+                add(`<text x="${LX+COL_W}" y="${ly+7}" font-family="'Courier New',Consolas,monospace" font-size="10" fill="${SUBL}" text-anchor="end">${pct}%</text>`);
               }
             } else {
-              add(`<text x="${PAD}" y="${y+22}" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${SUBL}">No activity this period</text>`);
+              add(`<text x="${LX}" y="${ly0+24}" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${SUBL}">No activity this period</text>`);
             }
 
-            // ── top repos ─────────────────────────────────────────────────────
+            // ── top repos (right column) ──────────────────────────────────────
             if (topRepos.length) {
-              const ry0 = H_HEADER + H_STATS + H_LANGS;
-              add(`<rect x="${PAD}" y="${ry0}" width="${W-PAD*2}" height="1" fill="url(#divGrad)"/>`);
-              let ry = ry0 + 22;
-              add(`<text x="${PAD}" y="${ry}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" font-weight="700" fill="${SUBL}" letter-spacing="3">TOP REPOS</text>`);
+              let ry = colTop + 22;
+              add(`<text x="${RX}" y="${ry}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" font-weight="700" fill="${SUBL}" letter-spacing="3">TOP REPOS</text>`);
               for (const [i, [repo, s]] of topRepos.entries()) {
-                const rowY = ry + 20 + i*30;
+                const rowY = ry + 22 + i*32;
                 const short = repo.split('/')[1];
-                if (i % 2 === 0) add(`<rect x="${PAD}" y="${rowY-11}" width="${W-PAD*2}" height="24" rx="4" fill="#ffffff" fill-opacity="0.025"/>`);
-                add(`<text x="${PAD+4}" y="${rowY+5}" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="${WHITE}">${esc(short)}</text>`);
-                add(`<text x="${W-PAD}" y="${rowY+5}" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="${GREEN}">+${fmt(s.add)}</tspan><tspan fill="${SUB}">  </tspan><tspan fill="${RED}">-${fmt(s.del)}</tspan><tspan fill="${SUB}">  </tspan><tspan fill="${SUBL}">${s.commits}c</tspan></text>`);
+                if (i % 2 === 0) add(`<rect x="${RX}" y="${rowY-11}" width="${COL_W}" height="26" rx="5" fill="#ffffff" fill-opacity="0.025"/>`);
+                add(`<text x="${RX+6}" y="${rowY+5}" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="${WHITE}">${esc(short)}</text>`);
+                add(`<text x="${RX+COL_W}" y="${rowY+5}" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="${GREEN}">+${fmt(s.add)}</tspan><tspan fill="${SUBL}">  </tspan><tspan fill="${RED}">-${fmt(s.del)}</tspan><tspan fill="${SUBL}">  </tspan><tspan fill="${SUB}">${s.commits}c</tspan></text>`);
               }
             }
 
             // ── footer ────────────────────────────────────────────────────────
-            add(`<text x="${W/2}" y="${H-12}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="${SUB}" text-anchor="middle" letter-spacing="2" opacity="0.6">AUTO · UPDATED · WEEKLY</text>`);
+            add(`<text x="${W/2}" y="${H-13}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="${SUB}" text-anchor="middle" letter-spacing="2.5" opacity="0.5">AUTO · UPDATED · WEEKLY</text>`);
 
             add(`</g>`);
             add(`</svg>`);
