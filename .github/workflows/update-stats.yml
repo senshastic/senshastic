@@ -34,9 +34,15 @@ jobs:
               username: USERNAME, per_page: 100
             });
 
+            console.log(`Total events fetched: ${events.length}`);
+            console.log(`Since: ${since}`);
+            const allPush = events.filter(e => e.type === 'PushEvent');
+            console.log(`Total PushEvents (any date): ${allPush.length}`);
+
             const pushEvents = events.filter(e =>
               e.type === 'PushEvent' && e.created_at >= since
             );
+            console.log(`PushEvents in last ${DAYS} days: ${pushEvents.length}`);
 
             // collect repo → [sha]
             const repoCommits = {};
@@ -46,6 +52,7 @@ jobs:
                 (repoCommits[repo] = repoCommits[repo] || []).push(c.sha);
               }
             }
+            console.log(`Repos with commits: ${JSON.stringify(Object.keys(repoCommits))}`);
 
             // ── commit stats ──────────────────────────────────────────────────
             let totalAdd = 0, totalDel = 0, totalCommits = 0;
