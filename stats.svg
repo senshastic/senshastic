@@ -1,0 +1,20 @@
+<svg width="600" height="222" viewBox="0 0 600 222" xmlns="http://www.w3.org/2000/svg">
+<rect width="600" height="222" rx="6" fill="#0d0d0d" stroke="#242424" stroke-width="1"/>
+<rect x="0" y="0" width="72" height="3" rx="1" fill="#f5c518"/>
+<rect x="74" y="0" width="18" height="3" rx="1" fill="#3a3a3a"/>
+<rect x="94" y="0" width="36" height="3" rx="1" fill="#242424"/>
+<text x="24" y="35" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" font-weight="700" fill="#f5c518" letter-spacing="2.5">CODING STATS · LAST 7 DAYS</text>
+<text x="576" y="35" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#888888" text-anchor="end">Mar 20 – Mar 27, 2026</text>
+<line x1="24" y1="56" x2="576" y2="56" stroke="#242424"/>
+<text x="93" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#3ddc84" text-anchor="middle">+0</text>
+<text x="93" y="107" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#888888" text-anchor="middle" letter-spacing="0.5">lines added</text>
+<text x="231" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#e8433a" text-anchor="middle">-0</text>
+<text x="231" y="107" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#888888" text-anchor="middle" letter-spacing="0.5">lines removed</text>
+<text x="369" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#4a9eff" text-anchor="middle">0</text>
+<text x="369" y="107" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#888888" text-anchor="middle" letter-spacing="0.5">repos</text>
+<text x="507" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#f5c518" text-anchor="middle">0</text>
+<text x="507" y="107" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#888888" text-anchor="middle" letter-spacing="0.5">commits</text>
+<line x1="24" y1="134" x2="576" y2="134" stroke="#242424"/>
+<text x="24" y="152" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-weight="700" fill="#888888" letter-spacing="2.5">LANGUAGES</text>
+<text x="24" y="172" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#888888">No activity in this period</text>
+</svg>
