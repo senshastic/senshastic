@@ -1,20 +1,51 @@
-<svg width="600" height="222" viewBox="0 0 600 222" xmlns="http://www.w3.org/2000/svg">
-<rect width="600" height="222" rx="6" fill="#0d0d0d" stroke="#242424" stroke-width="1"/>
+<svg width="600" height="488" viewBox="0 0 600 488" xmlns="http://www.w3.org/2000/svg">
+<rect width="600" height="488" rx="6" fill="#0d0d0d" stroke="#242424" stroke-width="1"/>
 <rect x="0" y="0" width="72" height="3" rx="1" fill="#f5c518"/>
 <rect x="74" y="0" width="18" height="3" rx="1" fill="#3a3a3a"/>
 <rect x="94" y="0" width="36" height="3" rx="1" fill="#242424"/>
 <text x="24" y="35" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" font-weight="700" fill="#f5c518" letter-spacing="2.5">CODING STATS · LAST 30 DAYS</text>
 <text x="576" y="35" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#888888" text-anchor="end">25 Feb – 27 Mar</text>
 <line x1="24" y1="56" x2="576" y2="56" stroke="#242424"/>
-<text x="93" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#3ddc84" text-anchor="middle">+0</text>
+<text x="93" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#3ddc84" text-anchor="middle">+6,093</text>
 <text x="93" y="107" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#888888" text-anchor="middle" letter-spacing="0.5">lines added</text>
-<text x="231" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#e8433a" text-anchor="middle">-0</text>
+<text x="231" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#e8433a" text-anchor="middle">-1,939</text>
 <text x="231" y="107" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#888888" text-anchor="middle" letter-spacing="0.5">lines removed</text>
-<text x="369" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#4a9eff" text-anchor="middle">0</text>
+<text x="369" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#4a9eff" text-anchor="middle">7</text>
 <text x="369" y="107" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#888888" text-anchor="middle" letter-spacing="0.5">repos</text>
-<text x="507" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#f5c518" text-anchor="middle">0</text>
+<text x="507" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#f5c518" text-anchor="middle">94</text>
 <text x="507" y="107" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#888888" text-anchor="middle" letter-spacing="0.5">commits</text>
 <line x1="24" y1="134" x2="576" y2="134" stroke="#242424"/>
 <text x="24" y="152" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-weight="700" fill="#888888" letter-spacing="2.5">LANGUAGES</text>
-<text x="24" y="172" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#888888">No public activity in this period</text>
+<text x="24" y="172" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#e0e0e0">HTML</text>
+<rect x="132" y="167" width="408" height="5" rx="2" fill="#242424"/>
+<rect x="132" y="167" width="400" height="5" rx="2" fill="#e34c26"/>
+<text x="576" y="172" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#888888" text-anchor="end">98%</text>
+<text x="24" y="198" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#e0e0e0">CSS</text>
+<rect x="132" y="193" width="408" height="5" rx="2" fill="#242424"/>
+<rect x="132" y="193" width="4" height="5" rx="2" fill="#563d7c"/>
+<text x="576" y="198" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#888888" text-anchor="end">1%</text>
+<text x="24" y="224" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#e0e0e0">Python</text>
+<rect x="132" y="219" width="408" height="5" rx="2" fill="#242424"/>
+<rect x="132" y="219" width="3" height="5" rx="2" fill="#3572A5"/>
+<text x="576" y="224" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#888888" text-anchor="end">0%</text>
+<text x="24" y="250" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#e0e0e0">JavaScript</text>
+<rect x="132" y="245" width="408" height="5" rx="2" fill="#242424"/>
+<rect x="132" y="245" width="3" height="5" rx="2" fill="#f1e05a"/>
+<text x="576" y="250" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#888888" text-anchor="end">0%</text>
+<text x="24" y="276" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#e0e0e0">Less</text>
+<rect x="132" y="271" width="408" height="5" rx="2" fill="#242424"/>
+<rect x="132" y="271" width="3" height="5" rx="2" fill="#888888"/>
+<text x="576" y="276" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#888888" text-anchor="end">0%</text>
+<line x1="24" y1="308" x2="576" y2="308" stroke="#242424"/>
+<text x="24" y="326" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-weight="700" fill="#888888" letter-spacing="2.5">TOP REPOS</text>
+<text x="24" y="346" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#e0e0e0">RivalsLuneXVisuals</text>
+<text x="576" y="346" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#3ddc84">+2,418</tspan>  <tspan fill="#e8433a">-91</tspan>  <tspan fill="#888888">9c</tspan></text>
+<text x="24" y="370" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#e0e0e0">ignite-rivals-analytics</text>
+<text x="576" y="370" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#3ddc84">+1,258</tspan>  <tspan fill="#e8433a">-564</tspan>  <tspan fill="#888888">11c</tspan></text>
+<text x="24" y="394" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#e0e0e0">Legit-Jarvis</text>
+<text x="576" y="394" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#3ddc84">+967</tspan>  <tspan fill="#e8433a">-766</tspan>  <tspan fill="#888888">10c</tspan></text>
+<text x="24" y="418" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#e0e0e0">ssg-rivals-analytics</text>
+<text x="576" y="418" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#3ddc84">+688</tspan>  <tspan fill="#e8433a">-264</tspan>  <tspan fill="#888888">37c</tspan></text>
+<text x="24" y="442" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#e0e0e0">legit-rivals-analytics</text>
+<text x="576" y="442" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#3ddc84">+508</tspan>  <tspan fill="#e8433a">-218</tspan>  <tspan fill="#888888">17c</tspan></text>
 </svg>
