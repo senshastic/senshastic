@@ -30,7 +30,7 @@ jobs:
             const fmt     = n => n >= 1000 ? n.toLocaleString() : String(n);
 
             // ── push events ──────────────────────────────────────────────────
-            const { data: events } = await github.rest.activity.listPublicEventsForUser({
+            const { data: events } = await github.rest.activity.listEventsForAuthenticatedUser({
               username: USERNAME, per_page: 100
             });
 
