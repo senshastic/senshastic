@@ -1,51 +1,132 @@
-<svg width="600" height="488" viewBox="0 0 600 488" xmlns="http://www.w3.org/2000/svg">
-<rect width="600" height="488" rx="6" fill="#0d0d0d" stroke="#242424" stroke-width="1"/>
-<rect x="0" y="0" width="72" height="3" rx="1" fill="#f5c518"/>
-<rect x="74" y="0" width="18" height="3" rx="1" fill="#3a3a3a"/>
-<rect x="94" y="0" width="36" height="3" rx="1" fill="#242424"/>
-<text x="24" y="35" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" font-weight="700" fill="#f5c518" letter-spacing="2.5">CODING STATS · LAST 30 DAYS</text>
-<text x="576" y="35" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#888888" text-anchor="end">25 Feb – 27 Mar</text>
-<line x1="24" y1="56" x2="576" y2="56" stroke="#242424"/>
-<text x="93" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#3ddc84" text-anchor="middle">+6,093</text>
-<text x="93" y="107" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#888888" text-anchor="middle" letter-spacing="0.5">lines added</text>
-<text x="231" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#e8433a" text-anchor="middle">-1,939</text>
-<text x="231" y="107" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#888888" text-anchor="middle" letter-spacing="0.5">lines removed</text>
-<text x="369" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#4a9eff" text-anchor="middle">7</text>
-<text x="369" y="107" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#888888" text-anchor="middle" letter-spacing="0.5">repos</text>
-<text x="507" y="90" font-family="'Segoe UI',system-ui,sans-serif" font-size="21" font-weight="700" fill="#f5c518" text-anchor="middle">94</text>
-<text x="507" y="107" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#888888" text-anchor="middle" letter-spacing="0.5">commits</text>
-<line x1="24" y1="134" x2="576" y2="134" stroke="#242424"/>
-<text x="24" y="152" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-weight="700" fill="#888888" letter-spacing="2.5">LANGUAGES</text>
-<text x="24" y="172" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#e0e0e0">HTML</text>
-<rect x="132" y="167" width="408" height="5" rx="2" fill="#242424"/>
-<rect x="132" y="167" width="400" height="5" rx="2" fill="#e34c26"/>
-<text x="576" y="172" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#888888" text-anchor="end">98%</text>
-<text x="24" y="198" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#e0e0e0">CSS</text>
-<rect x="132" y="193" width="408" height="5" rx="2" fill="#242424"/>
-<rect x="132" y="193" width="4" height="5" rx="2" fill="#563d7c"/>
-<text x="576" y="198" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#888888" text-anchor="end">1%</text>
-<text x="24" y="224" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#e0e0e0">Python</text>
-<rect x="132" y="219" width="408" height="5" rx="2" fill="#242424"/>
-<rect x="132" y="219" width="3" height="5" rx="2" fill="#3572A5"/>
-<text x="576" y="224" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#888888" text-anchor="end">0%</text>
-<text x="24" y="250" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#e0e0e0">JavaScript</text>
-<rect x="132" y="245" width="408" height="5" rx="2" fill="#242424"/>
-<rect x="132" y="245" width="3" height="5" rx="2" fill="#f1e05a"/>
-<text x="576" y="250" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#888888" text-anchor="end">0%</text>
-<text x="24" y="276" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#e0e0e0">Less</text>
-<rect x="132" y="271" width="408" height="5" rx="2" fill="#242424"/>
-<rect x="132" y="271" width="3" height="5" rx="2" fill="#888888"/>
-<text x="576" y="276" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#888888" text-anchor="end">0%</text>
-<line x1="24" y1="308" x2="576" y2="308" stroke="#242424"/>
-<text x="24" y="326" font-family="'Segoe UI',system-ui,sans-serif" font-size="9" font-weight="700" fill="#888888" letter-spacing="2.5">TOP REPOS</text>
-<text x="24" y="346" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#e0e0e0">RivalsLuneXVisuals</text>
-<text x="576" y="346" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#3ddc84">+2,418</tspan>  <tspan fill="#e8433a">-91</tspan>  <tspan fill="#888888">9c</tspan></text>
-<text x="24" y="370" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#e0e0e0">ignite-rivals-analytics</text>
-<text x="576" y="370" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#3ddc84">+1,258</tspan>  <tspan fill="#e8433a">-564</tspan>  <tspan fill="#888888">11c</tspan></text>
-<text x="24" y="394" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#e0e0e0">Legit-Jarvis</text>
-<text x="576" y="394" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#3ddc84">+967</tspan>  <tspan fill="#e8433a">-766</tspan>  <tspan fill="#888888">10c</tspan></text>
-<text x="24" y="418" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#e0e0e0">ssg-rivals-analytics</text>
-<text x="576" y="418" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#3ddc84">+688</tspan>  <tspan fill="#e8433a">-264</tspan>  <tspan fill="#888888">37c</tspan></text>
-<text x="24" y="442" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#e0e0e0">legit-rivals-analytics</text>
-<text x="576" y="442" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#3ddc84">+508</tspan>  <tspan fill="#e8433a">-218</tspan>  <tspan fill="#888888">17c</tspan></text>
+<svg width="600" height="604" viewBox="0 0 600 604" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<style>
+  @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.65} }
+  @keyframes fadein { from{opacity:0} to{opacity:1} }
+  .anim-1 { animation: pulse 4s ease-in-out infinite; }
+  .anim-2 { animation: pulse 4s ease-in-out infinite 0.8s; }
+  .anim-3 { animation: pulse 4s ease-in-out infinite 1.6s; }
+  .anim-4 { animation: pulse 4s ease-in-out infinite 2.4s; }
+  .card   { animation: fadein 0.6s ease-out both; }
+</style>
+<linearGradient id="bgGrad" x1="0" y1="0" x2="0.4" y2="1">
+  <stop offset="0%"   stop-color="#0f0f1a"/>
+  <stop offset="100%" stop-color="#080810"/>
+</linearGradient>
+<linearGradient id="accentGrad" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#a855f7"/>
+  <stop offset="50%"  stop-color="#00d4ff"/>
+  <stop offset="100%" stop-color="#10b981"/>
+</linearGradient>
+<linearGradient id="divGrad" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#a855f7" stop-opacity="0"/>
+  <stop offset="25%"  stop-color="#a855f7" stop-opacity="0.7"/>
+  <stop offset="75%"  stop-color="#00d4ff"   stop-opacity="0.7"/>
+  <stop offset="100%" stop-color="#00d4ff"   stop-opacity="0"/>
+</linearGradient>
+<radialGradient id="topGlow" cx="50%" cy="0%" r="70%" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="600" y2="604">
+  <stop offset="0%"   stop-color="#a855f7" stop-opacity="0.12"/>
+  <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+</radialGradient>
+<pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+  <circle cx="0.8" cy="0.8" r="0.8" fill="#ffffff" opacity="0.045"/>
+</pattern>
+<filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+<linearGradient id="lgHTML" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#e34c26" stop-opacity="1"/>
+  <stop offset="100%" stop-color="#e34c26" stop-opacity="0.35"/>
+</linearGradient>
+<linearGradient id="lgCSS" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#563d7c" stop-opacity="1"/>
+  <stop offset="100%" stop-color="#563d7c" stop-opacity="0.35"/>
+</linearGradient>
+<linearGradient id="lgPython" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#3572A5" stop-opacity="1"/>
+  <stop offset="100%" stop-color="#3572A5" stop-opacity="0.35"/>
+</linearGradient>
+<linearGradient id="lgJavaScript" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#f1e05a" stop-opacity="1"/>
+  <stop offset="100%" stop-color="#f1e05a" stop-opacity="0.35"/>
+</linearGradient>
+<linearGradient id="lgLess" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#6b7280" stop-opacity="1"/>
+  <stop offset="100%" stop-color="#6b7280" stop-opacity="0.35"/>
+</linearGradient>
+<clipPath id="clip"><rect width="600" height="604" rx="14"/></clipPath>
+</defs>
+<g class="card">
+<g clip-path="url(#clip)">
+<rect width="600" height="604" fill="url(#bgGrad)"/>
+<rect width="600" height="604" fill="url(#dots)"/>
+<rect width="600" height="604" fill="url(#topGlow)"/>
+</g>
+<rect width="600" height="604" rx="14" fill="none" stroke="url(#accentGrad)" stroke-width="1" stroke-opacity="0.25"/>
+<rect x="0" y="0" width="600" height="3" rx="0" fill="url(#accentGrad)" clip-path="url(#clip)"/>
+<path d="M24 22 L24 8 L38 8" fill="none" stroke="#00d4ff" stroke-width="1.2" opacity="0.4"/>
+<path d="M562 8 L576 8 L576 22" fill="none" stroke="#00d4ff" stroke-width="1.2" opacity="0.4"/>
+<path d="M24 582 L24 596 L38 596" fill="none" stroke="#00d4ff" stroke-width="1.2" opacity="0.4"/>
+<path d="M562 596 L576 596 L576 582" fill="none" stroke="#00d4ff" stroke-width="1.2" opacity="0.4"/>
+<text x="24" y="38" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" font-weight="700" fill="#00d4ff" letter-spacing="3" filter="url(#glow)">CODING STATS</text>
+<text x="162" y="38" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#6b7280" letter-spacing="2">· LAST 30 DAYS</text>
+<text x="576" y="38" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#6b7280" text-anchor="end">25 Feb – 27 Mar</text>
+<rect x="24" y="62" width="552" height="1" fill="url(#divGrad)"/>
+<rect x="29" y="72" width="128" height="80" rx="8" fill="#10b981" fill-opacity="0.06" stroke="#10b981" stroke-opacity="0.2" stroke-width="1"/>
+<text x="93" y="114" font-family="'Segoe UI',system-ui,sans-serif" font-size="24" font-weight="700" fill="#10b981" text-anchor="middle" filter="url(#glow)" class="anim-1">+6,235</text>
+<text x="93" y="134" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="#6b7280" text-anchor="middle" letter-spacing="1.5">LINES ADDED</text>
+<rect x="167" y="72" width="128" height="80" rx="8" fill="#ef4444" fill-opacity="0.06" stroke="#ef4444" stroke-opacity="0.2" stroke-width="1"/>
+<text x="231" y="114" font-family="'Segoe UI',system-ui,sans-serif" font-size="24" font-weight="700" fill="#ef4444" text-anchor="middle" filter="url(#glow)" class="anim-2">-2,039</text>
+<text x="231" y="134" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="#6b7280" text-anchor="middle" letter-spacing="1.5">LINES REMOVED</text>
+<rect x="305" y="72" width="128" height="80" rx="8" fill="#00d4ff" fill-opacity="0.06" stroke="#00d4ff" stroke-opacity="0.2" stroke-width="1"/>
+<text x="369" y="114" font-family="'Segoe UI',system-ui,sans-serif" font-size="24" font-weight="700" fill="#00d4ff" text-anchor="middle" filter="url(#glow)" class="anim-3">7</text>
+<text x="369" y="134" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="#6b7280" text-anchor="middle" letter-spacing="1.5">REPOS</text>
+<rect x="443" y="72" width="128" height="80" rx="8" fill="#f59e0b" fill-opacity="0.06" stroke="#f59e0b" stroke-opacity="0.2" stroke-width="1"/>
+<text x="507" y="114" font-family="'Segoe UI',system-ui,sans-serif" font-size="24" font-weight="700" fill="#f59e0b" text-anchor="middle" filter="url(#glow)" class="anim-4">95</text>
+<text x="507" y="134" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="#6b7280" text-anchor="middle" letter-spacing="1.5">COMMITS</text>
+<rect x="24" y="162" width="552" height="1" fill="url(#divGrad)"/>
+<text x="24" y="184" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" font-weight="700" fill="#6b7280" letter-spacing="3">LANGUAGES</text>
+<circle cx="29" cy="207" r="4" fill="#e34c26" opacity="0.85"/>
+<text x="38" y="211" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#f1f5f9">HTML</text>
+<rect x="134" y="204" width="402" height="6" rx="3" fill="#ffffff" fill-opacity="0.05"/>
+<rect x="134" y="204" width="394" height="6" rx="3" fill="url(#lgHTML)"/>
+<text x="576" y="211" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#6b7280" text-anchor="end">98%</text>
+<circle cx="29" cy="237" r="4" fill="#563d7c" opacity="0.85"/>
+<text x="38" y="241" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#f1f5f9">CSS</text>
+<rect x="134" y="234" width="402" height="6" rx="3" fill="#ffffff" fill-opacity="0.05"/>
+<rect x="134" y="234" width="5" height="6" rx="3" fill="url(#lgCSS)"/>
+<text x="576" y="241" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#6b7280" text-anchor="end">1%</text>
+<circle cx="29" cy="267" r="4" fill="#3572A5" opacity="0.85"/>
+<text x="38" y="271" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#f1f5f9">Python</text>
+<rect x="134" y="264" width="402" height="6" rx="3" fill="#ffffff" fill-opacity="0.05"/>
+<rect x="134" y="264" width="5" height="6" rx="3" fill="url(#lgPython)"/>
+<text x="576" y="271" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#6b7280" text-anchor="end">0%</text>
+<circle cx="29" cy="297" r="4" fill="#f1e05a" opacity="0.85"/>
+<text x="38" y="301" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#f1f5f9">JavaScript</text>
+<rect x="134" y="294" width="402" height="6" rx="3" fill="#ffffff" fill-opacity="0.05"/>
+<rect x="134" y="294" width="5" height="6" rx="3" fill="url(#lgJavaScript)"/>
+<text x="576" y="301" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#6b7280" text-anchor="end">0%</text>
+<circle cx="29" cy="327" r="4" fill="#6b7280" opacity="0.85"/>
+<text x="38" y="331" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#f1f5f9">Less</text>
+<rect x="134" y="324" width="402" height="6" rx="3" fill="#ffffff" fill-opacity="0.05"/>
+<rect x="134" y="324" width="5" height="6" rx="3" fill="url(#lgLess)"/>
+<text x="576" y="331" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#6b7280" text-anchor="end">0%</text>
+<rect x="24" y="368" width="552" height="1" fill="url(#divGrad)"/>
+<text x="24" y="390" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" font-weight="700" fill="#6b7280" letter-spacing="3">TOP REPOS</text>
+<rect x="24" y="399" width="552" height="24" rx="4" fill="#ffffff" fill-opacity="0.025"/>
+<text x="28" y="415" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#f1f5f9">RivalsLuneXVisuals</text>
+<text x="576" y="415" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#10b981">+2,418</tspan><tspan fill="#4b5563">  </tspan><tspan fill="#ef4444">-91</tspan><tspan fill="#4b5563">  </tspan><tspan fill="#6b7280">9c</tspan></text>
+<text x="28" y="445" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#f1f5f9">ignite-rivals-analytics</text>
+<text x="576" y="445" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#10b981">+1,258</tspan><tspan fill="#4b5563">  </tspan><tspan fill="#ef4444">-564</tspan><tspan fill="#4b5563">  </tspan><tspan fill="#6b7280">11c</tspan></text>
+<rect x="24" y="459" width="552" height="24" rx="4" fill="#ffffff" fill-opacity="0.025"/>
+<text x="28" y="475" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#f1f5f9">Legit-Jarvis</text>
+<text x="576" y="475" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#10b981">+967</tspan><tspan fill="#4b5563">  </tspan><tspan fill="#ef4444">-766</tspan><tspan fill="#4b5563">  </tspan><tspan fill="#6b7280">10c</tspan></text>
+<text x="28" y="505" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#f1f5f9">ssg-rivals-analytics</text>
+<text x="576" y="505" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#10b981">+688</tspan><tspan fill="#4b5563">  </tspan><tspan fill="#ef4444">-264</tspan><tspan fill="#4b5563">  </tspan><tspan fill="#6b7280">37c</tspan></text>
+<rect x="24" y="519" width="552" height="24" rx="4" fill="#ffffff" fill-opacity="0.025"/>
+<text x="28" y="535" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#f1f5f9">legit-rivals-analytics</text>
+<text x="576" y="535" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#10b981">+508</tspan><tspan fill="#4b5563">  </tspan><tspan fill="#ef4444">-218</tspan><tspan fill="#4b5563">  </tspan><tspan fill="#6b7280">17c</tspan></text>
+<text x="300" y="592" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="#4b5563" text-anchor="middle" letter-spacing="2" opacity="0.6">AUTO · UPDATED · WEEKLY</text>
+</g>
 </svg>
