@@ -114,7 +114,7 @@ for repo in user_repos:
     if full_name in active_repos:
         continue
     check = api_list(f'https://api.github.com/repos/{full_name}/commits',
-                     {'author': USERNAME, 'since': since, 'until': until},
+                     {'since': since, 'until': until},
                      max_pages=1)
     if check:
         active_repos.add(full_name)
