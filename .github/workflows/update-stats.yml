@@ -59,6 +59,20 @@ jobs:
                 activeRepos.add(e.payload.forkee.full_name);
               }
             }
+            // ── also scan user's own repos sorted by push time ───────────────
+            // catches repos missed by the events API (e.g. merge-only activity)
+            const { data: userRepos } = await github.rest.repos.listForUser({
+              username: USERNAME, per_page: 100, sort: 'pushed', direction: 'desc'
+            }).catch(() => ({ data: [] }));
+            for (const repo of userRepos) {
+              if (new Date(repo.pushed_at) < new Date(since)) break;
+              if (activeRepos.has(repo.full_name)) continue;
+              const { data: check } = await github.rest.repos.listCommits({
+                owner: repo.owner.login, repo: repo.name,
+                author: USERNAME, since, per_page: 1
+              }).catch(() => ({ data: [] }));
+              if (check.length > 0) activeRepos.add(repo.full_name);
+            }
             console.log(`Active repos: ${[...activeRepos].join(', ')}`);
 
             // ── fetch all commits by user in range per repo ──────────────────

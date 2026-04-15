@@ -102,6 +102,23 @@ for e in all_events:
         if forkee.get('full_name'):
             active_repos.add(forkee['full_name'])
 
+
+# ── also scan user's own repos sorted by push time ───────────────────────────
+# catches repos missed by the events API (e.g. merge-only activity)
+user_repos = api_list(f'https://api.github.com/users/{USERNAME}/repos',
+                      {'sort': 'pushed', 'direction': 'desc'}, max_pages=1)
+for repo in user_repos:
+    if repo.get('pushed_at', '') < since:
+        break
+    full_name = repo['full_name']
+    if full_name in active_repos:
+        continue
+    check = api_list(f'https://api.github.com/repos/{full_name}/commits',
+                     {'author': USERNAME, 'since': since, 'until': until},
+                     max_pages=1)
+    if check:
+        active_repos.add(full_name)
+
 print(f'  active repos: {", ".join(sorted(active_repos))}')
 
 # ── for each repo, fetch ALL commits by user in range ────────────────────────
