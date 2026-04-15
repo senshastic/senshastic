@@ -97,7 +97,7 @@ jobs:
             for (const [fullRepo, shas] of Object.entries(repoCommitShas)) {
               const [owner, repo] = fullRepo.split('/');
               let radd = 0, rdel = 0;
-              for (const sha of [...shas].slice(0, 15)) {
+              for (const sha of [...shas].slice(0, 50)) {
                 const { data } = await github.rest.repos.getCommit({ owner, repo, ref: sha }).catch(() => ({ data: {} }));
                 radd += data.stats?.additions || 0;
                 rdel += data.stats?.deletions || 0;
@@ -115,7 +115,7 @@ jobs:
             }
             const totalLB = Object.values(langBytes).reduce((a,b)=>a+b,0) || 1;
             const topLangs = Object.entries(langBytes).sort((a,b)=>b[1]-a[1]).slice(0,5);
-            const topRepos = Object.entries(repoStats).sort((a,b)=>(b[1].add+b[1].del)-(a[1].add+a[1].del)).slice(0,5);
+            const topRepos = Object.entries(repoStats).sort((a,b)=>b[1].commits-a[1].commits).slice(0,5);
             const repoCount = Object.keys(repoCommitShas).length;
             console.log(`+${totalAdd} / -${totalDel}, ${repoCount} repos, ${totalCommits} commits`);
 

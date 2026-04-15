@@ -144,7 +144,7 @@ repo_stats = {}
 
 for repo, shas in repo_commit_shas.items():
     radd = rdel = 0
-    for sha in list(shas)[:15]:
+    for sha in list(shas)[:50]:
         data = api(f'https://api.github.com/repos/{repo}/commits/{sha}')
         s = data.get('stats', {})
         radd += s.get('additions', 0)
@@ -165,7 +165,7 @@ top_langs = sorted(lang_bytes.items(), key=lambda x: -x[1])[:5]
 
 top_repos = sorted(
     repo_stats.items(),
-    key=lambda x: -(x[1]['add'] + x[1]['del'])
+    key=lambda x: -x[1]['commits']
 )[:5]
 
 repo_count = len(repo_commit_shas)
