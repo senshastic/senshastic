@@ -144,7 +144,7 @@ repo_stats = {}
 
 for repo, shas in repo_commit_shas.items():
     radd = rdel = 0
-    for sha in list(shas)[:50]:
+    for sha in shas:
         data = api(f'https://api.github.com/repos/{repo}/commits/{sha}')
         s = data.get('stats', {})
         radd += s.get('additions', 0)

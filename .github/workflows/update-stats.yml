@@ -97,7 +97,7 @@ jobs:
             for (const [fullRepo, shas] of Object.entries(repoCommitShas)) {
               const [owner, repo] = fullRepo.split('/');
               let radd = 0, rdel = 0;
-              for (const sha of [...shas].slice(0, 50)) {
+              for (const sha of [...shas]) {
                 const { data } = await github.rest.repos.getCommit({ owner, repo, ref: sha }).catch(() => ({ data: {} }));
                 radd += data.stats?.additions || 0;
                 rdel += data.stats?.deletions || 0;
