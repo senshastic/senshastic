@@ -1,129 +1,141 @@
-<svg width="860" height="424" viewBox="0 0 860 424" xmlns="http://www.w3.org/2000/svg">
+<svg width="740" height="395" viewBox="0 0 740 395" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <style>
-  @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.65} }
   @keyframes fadein { from{opacity:0} to{opacity:1} }
-  .anim-1 { animation: pulse 4s ease-in-out infinite; }
-  .anim-2 { animation: pulse 4s ease-in-out infinite 0.8s; }
-  .anim-3 { animation: pulse 4s ease-in-out infinite 1.6s; }
-  .anim-4 { animation: pulse 4s ease-in-out infinite 2.4s; }
-  .card   { animation: fadein 0.6s ease-out both; }
+  @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:.4} }
+  @keyframes snake  { 0%{stroke-dashoffset:0} 100%{stroke-dashoffset:-2270} }
+  .card   { animation: fadein .4s ease-out both; }
+  .snake  { animation: snake 5s linear infinite; }
+  .p1     { animation: pulse 4s ease-in-out infinite; }
+  .p2     { animation: pulse 4s ease-in-out infinite .8s; }
+  .p3     { animation: pulse 4s ease-in-out infinite 1.6s; }
+  .p4     { animation: pulse 4s ease-in-out infinite 2.4s; }
 </style>
-<linearGradient id="bgGrad" x1="0" y1="0" x2="0.4" y2="1">
-  <stop offset="0%"   stop-color="#0f0f1a"/>
-  <stop offset="100%" stop-color="#080810"/>
+<linearGradient id="bg" x1="0" y1="0" x2=".6" y2="1">
+  <stop offset="0%"   stop-color="#1c1625"/>
+  <stop offset="50%"  stop-color="#140f1c"/>
+  <stop offset="100%" stop-color="#0e0b14"/>
 </linearGradient>
-<linearGradient id="accentGrad" x1="0" y1="0" x2="1" y2="0">
-  <stop offset="0%"   stop-color="#a855f7"/>
-  <stop offset="50%"  stop-color="#00d4ff"/>
-  <stop offset="100%" stop-color="#10b981"/>
+<linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%"  stop-color="#ffffff" stop-opacity=".07"/>
+  <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
 </linearGradient>
-<linearGradient id="divGrad" x1="0" y1="0" x2="1" y2="0">
-  <stop offset="0%"   stop-color="#a855f7" stop-opacity="0"/>
-  <stop offset="25%"  stop-color="#a855f7" stop-opacity="0.7"/>
-  <stop offset="75%"  stop-color="#00d4ff"   stop-opacity="0.7"/>
-  <stop offset="100%" stop-color="#00d4ff"   stop-opacity="0"/>
+<linearGradient id="creamBar" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#d0b575" stop-opacity="0"/>
+  <stop offset="20%"  stop-color="#d0b575" stop-opacity=".7"/>
+  <stop offset="80%"  stop-color="#d0b575" stop-opacity=".7"/>
+  <stop offset="100%" stop-color="#d0b575" stop-opacity="0"/>
 </linearGradient>
-<radialGradient id="topGlow" cx="50%" cy="0%" r="70%" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="860" y2="424">
-  <stop offset="0%"   stop-color="#a855f7" stop-opacity="0.12"/>
-  <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
-</radialGradient>
-<pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
-  <circle cx="0.8" cy="0.8" r="0.8" fill="#ffffff" opacity="0.045"/>
-</pattern>
-<filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
-  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+<filter id="creamGlow" x="-40%" y="-40%" width="180%" height="180%">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/>
+  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
 </filter>
-<linearGradient id="lgHTML" x1="0" y1="0" x2="1" y2="0">
-  <stop offset="0%"   stop-color="#e34c26" stop-opacity="1"/>
-  <stop offset="100%" stop-color="#e34c26" stop-opacity="0.35"/>
+<filter id="numglow" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b"/>
+  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+<pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse">
+  <path d="M8 0 L0 8" stroke="#ffffff" stroke-opacity=".035" stroke-width=".5"/>
+  <path d="M0 0 L8 8" stroke="#ffffff" stroke-opacity=".02"  stroke-width=".5"/>
+</pattern>
+<linearGradient id="lb_Python" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#3572A5" stop-opacity=".9"/>
+  <stop offset="70%"  stop-color="#3572A5" stop-opacity=".5"/>
+  <stop offset="100%" stop-color="#3572A5" stop-opacity=".1"/>
 </linearGradient>
-<linearGradient id="lgCSS" x1="0" y1="0" x2="1" y2="0">
-  <stop offset="0%"   stop-color="#563d7c" stop-opacity="1"/>
-  <stop offset="100%" stop-color="#563d7c" stop-opacity="0.35"/>
+<linearGradient id="lb_JavaScript" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#f1e05a" stop-opacity=".9"/>
+  <stop offset="70%"  stop-color="#f1e05a" stop-opacity=".5"/>
+  <stop offset="100%" stop-color="#f1e05a" stop-opacity=".1"/>
 </linearGradient>
-<linearGradient id="lgPython" x1="0" y1="0" x2="1" y2="0">
-  <stop offset="0%"   stop-color="#3572A5" stop-opacity="1"/>
-  <stop offset="100%" stop-color="#3572A5" stop-opacity="0.35"/>
+<linearGradient id="lb_HTML" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#e34c26" stop-opacity=".9"/>
+  <stop offset="70%"  stop-color="#e34c26" stop-opacity=".5"/>
+  <stop offset="100%" stop-color="#e34c26" stop-opacity=".1"/>
 </linearGradient>
-<linearGradient id="lgJavaScript" x1="0" y1="0" x2="1" y2="0">
-  <stop offset="0%"   stop-color="#f1e05a" stop-opacity="1"/>
-  <stop offset="100%" stop-color="#f1e05a" stop-opacity="0.35"/>
+<linearGradient id="lb_CSS" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#563d7c" stop-opacity=".9"/>
+  <stop offset="70%"  stop-color="#563d7c" stop-opacity=".5"/>
+  <stop offset="100%" stop-color="#563d7c" stop-opacity=".1"/>
 </linearGradient>
-<linearGradient id="lgLess" x1="0" y1="0" x2="1" y2="0">
-  <stop offset="0%"   stop-color="#6b7280" stop-opacity="1"/>
-  <stop offset="100%" stop-color="#6b7280" stop-opacity="0.35"/>
+<linearGradient id="lb_TypeScript" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#3178c6" stop-opacity=".9"/>
+  <stop offset="70%"  stop-color="#3178c6" stop-opacity=".5"/>
+  <stop offset="100%" stop-color="#3178c6" stop-opacity=".1"/>
 </linearGradient>
-<clipPath id="clip"><rect width="860" height="424" rx="14"/></clipPath>
+<clipPath id="clip"><rect width="740" height="395" rx="14"/></clipPath>
 </defs>
 <g class="card">
 <g clip-path="url(#clip)">
-<rect width="860" height="424" fill="url(#bgGrad)"/>
-<rect width="860" height="424" fill="url(#dots)"/>
-<rect width="860" height="424" fill="url(#topGlow)"/>
+<rect width="740" height="395" fill="url(#bg)"/>
+<rect width="740" height="395" fill="url(#hatch)"/>
 </g>
-<rect width="860" height="424" rx="14" fill="none" stroke="url(#accentGrad)" stroke-width="1" stroke-opacity="0.25"/>
-<rect x="0" y="0" width="860" height="3" rx="0" fill="url(#accentGrad)" clip-path="url(#clip)"/>
-<path d="M32 22 L32 8 L46 8" fill="none" stroke="#00d4ff" stroke-width="1.2" opacity="0.4"/>
-<path d="M814 8 L828 8 L828 22" fill="none" stroke="#00d4ff" stroke-width="1.2" opacity="0.4"/>
-<path d="M32 402 L32 416 L46 416" fill="none" stroke="#00d4ff" stroke-width="1.2" opacity="0.4"/>
-<path d="M814 416 L828 416 L828 402" fill="none" stroke="#00d4ff" stroke-width="1.2" opacity="0.4"/>
-<text x="32" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="13" font-weight="700" fill="#00d4ff" letter-spacing="3.5" filter="url(#glow)">CODING STATS</text>
-<text x="184" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#6b7280" letter-spacing="2">· LAST 30 DAYS</text>
-<text x="828" y="41" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#6b7280" text-anchor="end">14 Mar – 13 Apr</text>
-<rect x="32" y="66" width="796" height="1" fill="url(#divGrad)"/>
-<rect x="38" y="76" width="187" height="90" rx="10" fill="#10b981" fill-opacity="0.06" stroke="#10b981" stroke-opacity="0.18" stroke-width="1"/>
-<text x="131.5" y="124" font-family="'Segoe UI',system-ui,sans-serif" font-size="28" font-weight="700" fill="#10b981" text-anchor="middle" filter="url(#glow)" class="anim-1">+4,405</text>
-<text x="131.5" y="144" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="#6b7280" text-anchor="middle" letter-spacing="2">LINES ADDED</text>
-<rect x="237" y="76" width="187" height="90" rx="10" fill="#ef4444" fill-opacity="0.06" stroke="#ef4444" stroke-opacity="0.18" stroke-width="1"/>
-<text x="330.5" y="124" font-family="'Segoe UI',system-ui,sans-serif" font-size="28" font-weight="700" fill="#ef4444" text-anchor="middle" filter="url(#glow)" class="anim-2">-708</text>
-<text x="330.5" y="144" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="#6b7280" text-anchor="middle" letter-spacing="2">LINES REMOVED</text>
-<rect x="436" y="76" width="187" height="90" rx="10" fill="#00d4ff" fill-opacity="0.06" stroke="#00d4ff" stroke-opacity="0.18" stroke-width="1"/>
-<text x="529.5" y="124" font-family="'Segoe UI',system-ui,sans-serif" font-size="28" font-weight="700" fill="#00d4ff" text-anchor="middle" filter="url(#glow)" class="anim-3">4</text>
-<text x="529.5" y="144" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="#6b7280" text-anchor="middle" letter-spacing="2">REPOS</text>
-<rect x="635" y="76" width="187" height="90" rx="10" fill="#f59e0b" fill-opacity="0.06" stroke="#f59e0b" stroke-opacity="0.18" stroke-width="1"/>
-<text x="728.5" y="124" font-family="'Segoe UI',system-ui,sans-serif" font-size="28" font-weight="700" fill="#f59e0b" text-anchor="middle" filter="url(#glow)" class="anim-4">100</text>
-<text x="728.5" y="144" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="#6b7280" text-anchor="middle" letter-spacing="2">COMMITS</text>
-<rect x="32" y="176" width="796" height="1" fill="url(#divGrad)"/>
-<line x1="430" y1="192" x2="430" y2="376" stroke="#a855f7" stroke-opacity="0.2" stroke-width="1" stroke-dasharray="3,4"/>
-<text x="32" y="198" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" font-weight="700" fill="#6b7280" letter-spacing="3">LANGUAGES</text>
-<circle cx="37" cy="223" r="4" fill="#e34c26" opacity="0.85"/>
-<text x="46" y="227" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#f1f5f9">HTML</text>
-<rect x="132" y="220" width="250" height="6" rx="3" fill="#ffffff" fill-opacity="0.05"/>
-<rect x="132" y="220" width="138" height="6" rx="3" fill="url(#lgHTML)"/>
-<text x="418" y="227" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#6b7280" text-anchor="end">55%</text>
-<circle cx="37" cy="255" r="4" fill="#563d7c" opacity="0.85"/>
-<text x="46" y="259" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#f1f5f9">CSS</text>
-<rect x="132" y="252" width="250" height="6" rx="3" fill="#ffffff" fill-opacity="0.05"/>
-<rect x="132" y="252" width="90" height="6" rx="3" fill="url(#lgCSS)"/>
-<text x="418" y="259" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#6b7280" text-anchor="end">36%</text>
-<circle cx="37" cy="287" r="4" fill="#3572A5" opacity="0.85"/>
-<text x="46" y="291" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#f1f5f9">Python</text>
-<rect x="132" y="284" width="250" height="6" rx="3" fill="#ffffff" fill-opacity="0.05"/>
-<rect x="132" y="284" width="13" height="6" rx="3" fill="url(#lgPython)"/>
-<text x="418" y="291" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#6b7280" text-anchor="end">5%</text>
-<circle cx="37" cy="319" r="4" fill="#f1e05a" opacity="0.85"/>
-<text x="46" y="323" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#f1f5f9">JavaScript</text>
-<rect x="132" y="316" width="250" height="6" rx="3" fill="#ffffff" fill-opacity="0.05"/>
-<rect x="132" y="316" width="8" height="6" rx="3" fill="url(#lgJavaScript)"/>
-<text x="418" y="323" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#6b7280" text-anchor="end">3%</text>
-<circle cx="37" cy="351" r="4" fill="#6b7280" opacity="0.85"/>
-<text x="46" y="355" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#f1f5f9">Less</text>
-<rect x="132" y="348" width="250" height="6" rx="3" fill="#ffffff" fill-opacity="0.05"/>
-<rect x="132" y="348" width="5" height="6" rx="3" fill="url(#lgLess)"/>
-<text x="418" y="355" font-family="'Courier New',Consolas,monospace" font-size="10" fill="#6b7280" text-anchor="end">0%</text>
-<text x="442" y="198" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" font-weight="700" fill="#6b7280" letter-spacing="3">TOP REPOS</text>
-<rect x="442" y="209" width="386" height="26" rx="5" fill="#ffffff" fill-opacity="0.025"/>
-<text x="448" y="225" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#f1f5f9">ssg-rivals-analytics</text>
-<text x="828" y="225" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#10b981">+2,039</tspan><tspan fill="#6b7280">  </tspan><tspan fill="#ef4444">-98</tspan><tspan fill="#6b7280">  </tspan><tspan fill="#4b5563">9c</tspan></text>
-<text x="448" y="257" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#f1f5f9">Fallsha-Jankyard</text>
-<text x="828" y="257" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#10b981">+1,448</tspan><tspan fill="#6b7280">  </tspan><tspan fill="#ef4444">-0</tspan><tspan fill="#6b7280">  </tspan><tspan fill="#4b5563">1c</tspan></text>
-<rect x="442" y="273" width="386" height="26" rx="5" fill="#ffffff" fill-opacity="0.025"/>
-<text x="448" y="289" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#f1f5f9">legit-rivals-analytics</text>
-<text x="828" y="289" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#10b981">+704</tspan><tspan fill="#6b7280">  </tspan><tspan fill="#ef4444">-542</tspan><tspan fill="#6b7280">  </tspan><tspan fill="#4b5563">43c</tspan></text>
-<text x="448" y="321" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="#f1f5f9">ignite-rivals-analytics</text>
-<text x="828" y="321" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="#10b981">+214</tspan><tspan fill="#6b7280">  </tspan><tspan fill="#ef4444">-68</tspan><tspan fill="#6b7280">  </tspan><tspan fill="#4b5563">47c</tspan></text>
-<text x="430" y="411" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="#4b5563" text-anchor="middle" letter-spacing="2.5" opacity="0.5">AUTO · UPDATED · WEEKLY</text>
+<rect width="740" height="395" rx="14" fill="none" stroke="#ffffff" stroke-opacity=".08" stroke-width="1"/>
+<rect width="740" height="395" rx="14" fill="none" stroke="#d0b575" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="409 1861" class="snake"/>
+<text x="22" y="38" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" font-weight="700" fill="#d0b575" letter-spacing="3.5" filter="url(#creamGlow)">CODING STATS</text>
+<text x="156" y="38" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10" fill="#5a4e42" letter-spacing="1.5">· LAST 30 DAYS</text>
+<text x="718" y="38" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9.5" fill="#5a4e42" text-anchor="end">Mar 15 – Apr 15</text>
+<rect x="22" y="55" width="696" height="94" rx="10" fill="#ffffff" fill-opacity=".05"/>
+<rect x="22" y="55" width="696" height="94" rx="10" fill="url(#sheen)"/>
+<rect x="22" y="55" width="696" height="94" rx="10" fill="none" stroke="#ffffff" stroke-opacity=".1" stroke-width="1"/>
+<rect x="23" y="56" width="694" height="1" rx="0" fill="#ffffff" fill-opacity=".06"/>
+<text x="109" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="21" font-weight="700" fill="#7ec87e" text-anchor="middle" filter="url(#numglow)" class="p1">+6,235</text>
+<text x="109" y="127" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="8.5" fill="#5a4e42" text-anchor="middle" letter-spacing="1.5">lines added</text>
+<line x1="196" y1="71" x2="196" y2="133" stroke="#ffffff" stroke-opacity=".06" stroke-width="1"/>
+<text x="283" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="21" font-weight="700" fill="#c47070" text-anchor="middle" filter="url(#numglow)" class="p2">-2,039</text>
+<text x="283" y="127" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="8.5" fill="#5a4e42" text-anchor="middle" letter-spacing="1.5">lines removed</text>
+<line x1="370" y1="71" x2="370" y2="133" stroke="#ffffff" stroke-opacity=".06" stroke-width="1"/>
+<text x="457" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="25" font-weight="700" fill="#7ab0cf" text-anchor="middle" filter="url(#numglow)" class="p3">7</text>
+<text x="457" y="127" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="8.5" fill="#5a4e42" text-anchor="middle" letter-spacing="1.5">repos</text>
+<line x1="544" y1="71" x2="544" y2="133" stroke="#ffffff" stroke-opacity=".06" stroke-width="1"/>
+<text x="631" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="25" font-weight="700" fill="#a08fd4" text-anchor="middle" filter="url(#numglow)" class="p4">95</text>
+<text x="631" y="127" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="8.5" fill="#5a4e42" text-anchor="middle" letter-spacing="1.5">commits</text>
+<rect x="22" y="159" width="696" height="1" fill="url(#creamBar)" opacity=".5"/>
+<rect x="22" y="171" width="341" height="190" rx="10" fill="#ffffff" fill-opacity=".05"/>
+<rect x="22" y="171" width="341" height="190" rx="10" fill="url(#sheen)"/>
+<rect x="22" y="171" width="341" height="190" rx="10" fill="none" stroke="#ffffff" stroke-opacity=".09" stroke-width="1"/>
+<rect x="23" y="172" width="339" height="1" fill="#ffffff" fill-opacity=".05"/>
+<rect x="377" y="171" width="341" height="190" rx="10" fill="#ffffff" fill-opacity=".05"/>
+<rect x="377" y="171" width="341" height="190" rx="10" fill="url(#sheen)"/>
+<rect x="377" y="171" width="341" height="190" rx="10" fill="none" stroke="#ffffff" stroke-opacity=".09" stroke-width="1"/>
+<rect x="378" y="172" width="339" height="1" fill="#ffffff" fill-opacity=".05"/>
+<text x="34" y="189" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="7" font-weight="700" fill="#7a6035" letter-spacing="3">LANGUAGES</text>
+<circle cx="39" cy="210" r="3.5" fill="#3572A5" opacity=".9"/>
+<text x="48" y="214" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">Python</text>
+<rect x="118" y="207" width="215" height="5" rx="2.5" fill="#ffffff" fill-opacity=".05"/>
+<rect x="118" y="207" width="101" height="5" rx="2.5" fill="url(#lb_Python)"/>
+<text x="355" y="214" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">47%</text>
+<circle cx="39" cy="238" r="3.5" fill="#f1e05a" opacity=".9"/>
+<text x="48" y="242" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">JavaScript</text>
+<rect x="118" y="235" width="215" height="5" rx="2.5" fill="#ffffff" fill-opacity=".05"/>
+<rect x="118" y="235" width="60" height="5" rx="2.5" fill="url(#lb_JavaScript)"/>
+<text x="355" y="242" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">28%</text>
+<circle cx="39" cy="266" r="3.5" fill="#e34c26" opacity=".9"/>
+<text x="48" y="270" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">HTML</text>
+<rect x="118" y="263" width="215" height="5" rx="2.5" fill="#ffffff" fill-opacity=".05"/>
+<rect x="118" y="263" width="30" height="5" rx="2.5" fill="url(#lb_HTML)"/>
+<text x="355" y="270" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">14%</text>
+<circle cx="39" cy="294" r="3.5" fill="#563d7c" opacity=".9"/>
+<text x="48" y="298" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">CSS</text>
+<rect x="118" y="291" width="215" height="5" rx="2.5" fill="#ffffff" fill-opacity=".05"/>
+<rect x="118" y="291" width="15" height="5" rx="2.5" fill="url(#lb_CSS)"/>
+<text x="355" y="298" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">7%</text>
+<circle cx="39" cy="322" r="3.5" fill="#3178c6" opacity=".9"/>
+<text x="48" y="326" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">TypeScript</text>
+<rect x="118" y="319" width="215" height="5" rx="2.5" fill="#ffffff" fill-opacity=".05"/>
+<rect x="118" y="319" width="9" height="5" rx="2.5" fill="url(#lb_TypeScript)"/>
+<text x="355" y="326" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">4%</text>
+<text x="389" y="189" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="7" font-weight="700" fill="#7a6035" letter-spacing="3">TOP REPOS</text>
+<rect x="383" y="197" width="329" height="26" rx="5" fill="#ffffff" fill-opacity=".03"/>
+<text x="391" y="213" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">RivalsLuneXVisuals</text>
+<text x="710" y="213" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+2,418</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-91</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">9c</tspan></text>
+<text x="391" y="241" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">Legit-Jarvis</text>
+<text x="710" y="241" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+967</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-766</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">10c</tspan></text>
+<rect x="383" y="253" width="329" height="26" rx="5" fill="#ffffff" fill-opacity=".03"/>
+<text x="391" y="269" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">ignite-rivals</text>
+<text x="710" y="269" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+1,258</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-564</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">11c</tspan></text>
+<text x="391" y="297" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">ssg-rivals</text>
+<text x="710" y="297" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+688</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-264</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">37c</tspan></text>
+<text x="370" y="383" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="7.5" fill="#7a6035" text-anchor="middle" letter-spacing="2.5" opacity=".6">AUTO · UPDATED · WEEKLY</text>
 </g>
 </svg>

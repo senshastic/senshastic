@@ -25,257 +25,245 @@ jobs:
             const DAYS = 30;
 
             const since = new Date(Date.now() - DAYS * 86400000).toISOString();
-            const fmtDate = d => new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short' });
-            const period  = `${fmtDate(since)} – ${fmtDate(new Date())}`;
+            const fmtDate = d => new Date(d).toLocaleDateString('en-US', { month:'short', day:'numeric' });
+            const period  = `${fmtDate(since)} \u2013 ${fmtDate(new Date())}`;
             const fmt     = n => n >= 1000 ? n.toLocaleString() : String(n);
+            const esc     = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-            // ── push events ──────────────────────────────────────────────────
-            const { data: events } = await github.rest.activity.listEventsForAuthenticatedUser({
-              username: USERNAME, per_page: 100
-            });
+            // ── fetch events (up to 300) ─────────────────────────────────────
+            let allEvents = [];
+            for (let page = 1; page <= 3; page++) {
+              const { data } = await github.rest.activity.listEventsForAuthenticatedUser({
+                username: USERNAME, per_page: 100, page
+              }).catch(() => ({ data: [] }));
+              if (!data.length) break;
+              const inWindow = data.filter(e => e.created_at >= since);
+              allEvents = allEvents.concat(inWindow);
+              if (inWindow.length < data.length) break;
+            }
+            console.log(`Events in window: ${allEvents.length}`);
 
-            console.log(`Total events fetched: ${events.length}`);
-            console.log(`Since: ${since}`);
-            const allPush = events.filter(e => e.type === 'PushEvent');
-            console.log(`Total PushEvents (any date): ${allPush.length}`);
+            // ── collect repos from PushEvent, CreateEvent, ForkEvent ─────────
+            const activeRepos = new Set();
+            const seedShas = {};
 
-            const pushEvents = events.filter(e =>
-              e.type === 'PushEvent' && e.created_at >= since
-            );
-            console.log(`PushEvents in last ${DAYS} days: ${pushEvents.length}`);
-            // collect repo → [sha] using head SHA from each push event
-            const repoCommits = {};
-            for (const e of pushEvents) {
-              const repo = e.repo.name;
-              const sha = e.payload.head;
-              if (sha) (repoCommits[repo] = repoCommits[repo] || []).push(sha);
+            for (const e of allEvents) {
+              if (e.type === 'PushEvent') {
+                activeRepos.add(e.repo.name);
+                if (!seedShas[e.repo.name]) seedShas[e.repo.name] = new Set();
+                for (const c of (e.payload.commits || [])) seedShas[e.repo.name].add(c.sha);
+                if (e.payload.head) seedShas[e.repo.name].add(e.payload.head);
+              } else if (e.type === 'CreateEvent' && e.payload.ref_type === 'repository') {
+                activeRepos.add(e.repo.name);
+              } else if (e.type === 'ForkEvent' && e.payload.forkee) {
+                activeRepos.add(e.payload.forkee.full_name);
+              }
+            }
+            console.log(`Active repos: ${[...activeRepos].join(', ')}`);
+
+            // ── fetch all commits by user in range per repo ──────────────────
+            const repoCommitShas = {};
+            for (const fullRepo of activeRepos) {
+              const [owner, repo] = fullRepo.split('/');
+              const shas = new Set(seedShas[fullRepo] || []);
+              for (let page = 1; page <= 2; page++) {
+                const { data: commits } = await github.rest.repos.listCommits({
+                  owner, repo, author: USERNAME, since, per_page: 100, page
+                }).catch(() => ({ data: [] }));
+                if (!commits.length) break;
+                for (const c of commits) shas.add(c.sha);
+                if (commits.length < 100) break;
+              }
+              if (shas.size > 0) repoCommitShas[fullRepo] = shas;
             }
 
-            // ── commit stats ──────────────────────────────────────────────────
+            // ── per-commit stats ─────────────────────────────────────────────
             let totalAdd = 0, totalDel = 0, totalCommits = 0;
             const repoStats = {};
-
-            for (const [fullRepo, shas] of Object.entries(repoCommits)) {
+            for (const [fullRepo, shas] of Object.entries(repoCommitShas)) {
               const [owner, repo] = fullRepo.split('/');
               let radd = 0, rdel = 0;
-              const seen = [...new Set(shas)].slice(0, 10);
-              for (const sha of seen) {
-                try {
-                  const { data } = await github.rest.repos.getCommit({ owner, repo, ref: sha });
-                  radd += data.stats?.additions || 0;
-                  rdel += data.stats?.deletions || 0;
-                } catch (_) {}
+              for (const sha of [...shas].slice(0, 15)) {
+                const { data } = await github.rest.repos.getCommit({ owner, repo, ref: sha }).catch(() => ({ data: {} }));
+                radd += data.stats?.additions || 0;
+                rdel += data.stats?.deletions || 0;
               }
-              repoStats[fullRepo] = { add: radd, del: rdel, commits: shas.length };
-              totalAdd += radd; totalDel += rdel; totalCommits += shas.length;
+              repoStats[fullRepo] = { add: radd, del: rdel, commits: shas.size };
+              totalAdd += radd; totalDel += rdel; totalCommits += shas.size;
             }
 
-            // ── language breakdown ────────────────────────────────────────────
+            // ── languages ────────────────────────────────────────────────────
             const langBytes = {};
-            for (const fullRepo of Object.keys(repoCommits)) {
+            for (const fullRepo of Object.keys(repoCommitShas)) {
               const [owner, repo] = fullRepo.split('/');
-              try {
-                const { data } = await github.rest.repos.listLanguages({ owner, repo });
-                for (const [lang, b] of Object.entries(data)) {
-                  langBytes[lang] = (langBytes[lang] || 0) + b;
-                }
-              } catch (_) {}
+              const { data } = await github.rest.repos.listLanguages({ owner, repo }).catch(() => ({ data: {} }));
+              for (const [lang, b] of Object.entries(data)) langBytes[lang] = (langBytes[lang] || 0) + b;
             }
             const totalLB = Object.values(langBytes).reduce((a,b)=>a+b,0) || 1;
             const topLangs = Object.entries(langBytes).sort((a,b)=>b[1]-a[1]).slice(0,5);
+            const topRepos = Object.entries(repoStats).sort((a,b)=>(b[1].add+b[1].del)-(a[1].add+a[1].del)).slice(0,5);
+            const repoCount = Object.keys(repoCommitShas).length;
+            console.log(`+${totalAdd} / -${totalDel}, ${repoCount} repos, ${totalCommits} commits`);
 
-            // ── top repos ─────────────────────────────────────────────────────
-            const topRepos = Object.entries(repoStats)
-              .sort((a,b) => (b[1].add+b[1].del) - (a[1].add+a[1].del))
-              .slice(0,5);
-
-            console.log(`+${totalAdd} / -${totalDel}, ${Object.keys(repoCommits).length} repos, ${totalCommits} commits`);
-
-            // ── SVG ───────────────────────────────────────────────────────────
-            const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-            const CYAN   = '#00d4ff';
-            const PURPLE = '#a855f7';
-            const GREEN  = '#10b981';
-            const RED    = '#ef4444';
-            const GOLD   = '#f59e0b';
-            const WHITE  = '#f1f5f9';
-            const SUB    = '#4b5563';
-            const SUBL   = '#6b7280';
-
+            // ══════════════════════════════════════════════════════════════════
+            // SVG — SNESHLIB design
+            // ══════════════════════════════════════════════════════════════════
+            const CREAM       = '#d0b575';
+            const CREAM_MUTED = '#7a6035';
+            const GREEN  = '#7ec87e';
+            const RED    = '#c47070';
+            const BLUE   = '#7ab0cf';
+            const PURPLE = '#a08fd4';
+            const WHITE  = '#e0d5c8';
+            const MUTED  = '#5a4e42';
+            const DIM    = '#302820';
             const LANG_COLORS = {
               JavaScript:'#f1e05a', TypeScript:'#3178c6', Python:'#3572A5',
               HTML:'#e34c26', CSS:'#563d7c', SCSS:'#c6538c', Shell:'#89e051',
               Rust:'#dea584', Go:'#00ADD8', Java:'#b07219', 'C++':'#f34b7d',
               C:'#555555', Ruby:'#701516', PHP:'#4F5D95', Kotlin:'#A97BFF',
               Swift:'#F05138', Dart:'#00B4AB', Vue:'#41b883', Svelte:'#ff3e00',
-              Lua:'#000080',
+              Lua:'#000080', Less:'#1d365d',
             };
 
-            const W = 860, PAD = 32;
-            const H_HEADER  = 66;
-            const H_STATS   = 110;
-            const COL_GAP   = 24;
-            const COL_W     = Math.floor((W - PAD*2 - COL_GAP) / 2);
-            const H_LANGS_C = 44 + Math.max(topLangs.length,1)*32 + 12;
-            const H_REPOS_C = topRepos.length ? 44 + topRepos.length*32 + 12 : 0;
-            const H_BOTTOM  = Math.max(H_LANGS_C, H_REPOS_C || H_LANGS_C);
-            const H_FOOT    = 32;
-            const H = H_HEADER + H_STATS + H_BOTTOM + H_FOOT;
+            const W = 740, PAD = 22, RXC = 14;
+            const SP_Y = 55, SP_H = 94;
+            const BP_GAP = 14;
+            const BP_Y = SP_Y + SP_H + 22;
+            const BP_W = Math.floor((W - PAD * 2 - BP_GAP) / 2);
+            const LANG_ROWS = Math.max(topLangs.length, 1);
+            const REPO_ROWS = topRepos.length;
+            const ROW_H = 28;
+            const BP_H = 36 + Math.max(LANG_ROWS, REPO_ROWS) * ROW_H + 14;
+            const H_FOOT = 34;
+            const H_TOTAL = BP_Y + BP_H + H_FOOT;
+            const PERIM = 2 * (W + H_TOTAL);
+            const DASH_VIS = Math.round(PERIM * 0.18);
+            const DASH_GAP = PERIM - DASH_VIS;
+            const MF = 'font-family="\'Cascadia Code\',\'Fira Code\',\'SF Mono\',ui-monospace,monospace"';
 
             const lines = [];
             const add = s => lines.push(s);
 
-            add(`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`);
-
-            // ── defs ──────────────────────────────────────────────────────────
+            add(`<svg width="${W}" height="${H_TOTAL}" viewBox="0 0 ${W} ${H_TOTAL}" xmlns="http://www.w3.org/2000/svg">`);
             add('<defs>');
             add('<style>');
-            add('  @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.65} }');
             add('  @keyframes fadein { from{opacity:0} to{opacity:1} }');
-            add('  .anim-1 { animation: pulse 4s ease-in-out infinite; }');
-            add('  .anim-2 { animation: pulse 4s ease-in-out infinite 0.8s; }');
-            add('  .anim-3 { animation: pulse 4s ease-in-out infinite 1.6s; }');
-            add('  .anim-4 { animation: pulse 4s ease-in-out infinite 2.4s; }');
-            add('  .card   { animation: fadein 0.6s ease-out both; }');
+            add('  @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:.4} }');
+            add(`  @keyframes snake  { 0%{stroke-dashoffset:0} 100%{stroke-dashoffset:-${PERIM}} }`);
+            add('  .card   { animation: fadein .4s ease-out both; }');
+            add('  .snake  { animation: snake 5s linear infinite; }');
+            add('  .p1     { animation: pulse 4s ease-in-out infinite; }');
+            add('  .p2     { animation: pulse 4s ease-in-out infinite .8s; }');
+            add('  .p3     { animation: pulse 4s ease-in-out infinite 1.6s; }');
+            add('  .p4     { animation: pulse 4s ease-in-out infinite 2.4s; }');
             add('</style>');
-            add('<linearGradient id="bgGrad" x1="0" y1="0" x2="0.4" y2="1">');
-            add('  <stop offset="0%"   stop-color="#0f0f1a"/>');
-            add('  <stop offset="100%" stop-color="#080810"/>');
+            add('<linearGradient id="bg" x1="0" y1="0" x2=".6" y2="1">');
+            add('  <stop offset="0%"   stop-color="#1c1625"/>');
+            add('  <stop offset="50%"  stop-color="#140f1c"/>');
+            add('  <stop offset="100%" stop-color="#0e0b14"/>');
             add('</linearGradient>');
-            add(`<linearGradient id="accentGrad" x1="0" y1="0" x2="1" y2="0">`);
-            add(`  <stop offset="0%"   stop-color="${PURPLE}"/>`);
-            add(`  <stop offset="50%"  stop-color="${CYAN}"/>`);
-            add(`  <stop offset="100%" stop-color="${GREEN}"/>`);
+            add('<linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">');
+            add('  <stop offset="0%"  stop-color="#ffffff" stop-opacity=".07"/>');
+            add('  <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>');
             add('</linearGradient>');
-            add(`<linearGradient id="divGrad" x1="0" y1="0" x2="1" y2="0">`);
-            add(`  <stop offset="0%"   stop-color="${PURPLE}" stop-opacity="0"/>`);
-            add(`  <stop offset="25%"  stop-color="${PURPLE}" stop-opacity="0.7"/>`);
-            add(`  <stop offset="75%"  stop-color="${CYAN}"   stop-opacity="0.7"/>`);
-            add(`  <stop offset="100%" stop-color="${CYAN}"   stop-opacity="0"/>`);
+            add(`<linearGradient id="creamBar" x1="0" y1="0" x2="1" y2="0">`);
+            add(`  <stop offset="0%"   stop-color="${CREAM}" stop-opacity="0"/>`);
+            add(`  <stop offset="20%"  stop-color="${CREAM}" stop-opacity=".7"/>`);
+            add(`  <stop offset="80%"  stop-color="${CREAM}" stop-opacity=".7"/>`);
+            add(`  <stop offset="100%" stop-color="${CREAM}" stop-opacity="0"/>`);
             add('</linearGradient>');
-            add(`<radialGradient id="topGlow" cx="50%" cy="0%" r="70%" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${W}" y2="${H}">`);
-            add(`  <stop offset="0%"   stop-color="${PURPLE}" stop-opacity="0.12"/>`);
-            add(`  <stop offset="100%" stop-color="${PURPLE}" stop-opacity="0"/>`);
-            add('</radialGradient>');
-            add('<pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">');
-            add('  <circle cx="0.8" cy="0.8" r="0.8" fill="#ffffff" opacity="0.045"/>');
-            add('</pattern>');
-            add('<filter id="glow" x="-30%" y="-30%" width="160%" height="160%">');
-            add('  <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>');
-            add('  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>');
+            add('<filter id="creamGlow" x="-40%" y="-40%" width="180%" height="180%">');
+            add('  <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/>');
+            add('  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>');
             add('</filter>');
+            add('<filter id="numglow" x="-60%" y="-60%" width="220%" height="220%">');
+            add('  <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b"/>');
+            add('  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>');
+            add('</filter>');
+            add('<pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse">');
+            add('  <path d="M8 0 L0 8" stroke="#ffffff" stroke-opacity=".035" stroke-width=".5"/>');
+            add('  <path d="M0 0 L8 8" stroke="#ffffff" stroke-opacity=".02"  stroke-width=".5"/>');
+            add('</pattern>');
             for (const [lang] of topLangs) {
-              const c = LANG_COLORS[lang] || SUBL;
-              const id = `lg${lang.replace(/[^a-z0-9]/gi,'_')}`;
+              const c = LANG_COLORS[lang] || MUTED;
+              const id = `lb_${lang.replace(/[^a-z0-9]/gi,'_')}`;
               add(`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="0">`);
-              add(`  <stop offset="0%"   stop-color="${c}" stop-opacity="1"/>`);
-              add(`  <stop offset="100%" stop-color="${c}" stop-opacity="0.35"/>`);
+              add(`  <stop offset="0%"   stop-color="${c}" stop-opacity=".9"/>`);
+              add(`  <stop offset="70%"  stop-color="${c}" stop-opacity=".5"/>`);
+              add(`  <stop offset="100%" stop-color="${c}" stop-opacity=".1"/>`);
               add('</linearGradient>');
             }
-
-            // clip path
-            add(`<clipPath id="clip"><rect width="${W}" height="${H}" rx="14"/></clipPath>`);
-            add(`</defs>`);
-
-            // ── card base ─────────────────────────────────────────────────────
-            add(`<g class="card">`);
-            add(`<g clip-path="url(#clip)">`);
-            add(`<rect width="${W}" height="${H}" fill="url(#bgGrad)"/>`);
-            add(`<rect width="${W}" height="${H}" fill="url(#dots)"/>`);
-            add(`<rect width="${W}" height="${H}" fill="url(#topGlow)"/>`);
-            add(`</g>`);
-
-            // border
-            add(`<rect width="${W}" height="${H}" rx="14" fill="none" stroke="url(#accentGrad)" stroke-width="1" stroke-opacity="0.25"/>`);
-
-            // top accent bar
-            add(`<rect x="0" y="0" width="${W}" height="3" rx="0" fill="url(#accentGrad)" clip-path="url(#clip)"/>`);
-
-            // tech corner brackets
-            const B = 14;
-            add(`<path d="M${PAD} ${8+B} L${PAD} ${8} L${PAD+B} ${8}" fill="none" stroke="${CYAN}" stroke-width="1.2" opacity="0.4"/>`);
-            add(`<path d="M${W-PAD-B} ${8} L${W-PAD} ${8} L${W-PAD} ${8+B}" fill="none" stroke="${CYAN}" stroke-width="1.2" opacity="0.4"/>`);
-            add(`<path d="M${PAD} ${H-8-B} L${PAD} ${H-8} L${PAD+B} ${H-8}" fill="none" stroke="${CYAN}" stroke-width="1.2" opacity="0.4"/>`);
-            add(`<path d="M${W-PAD-B} ${H-8} L${W-PAD} ${H-8} L${W-PAD} ${H-8-B}" fill="none" stroke="${CYAN}" stroke-width="1.2" opacity="0.4"/>`);
-
-            // ── header ────────────────────────────────────────────────────────
-            add(`<text x="${PAD}" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="13" font-weight="700" fill="${CYAN}" letter-spacing="3.5" filter="url(#glow)">CODING STATS</text>`);
-            add(`<text x="${PAD+152}" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="${SUBL}" letter-spacing="2">· LAST ${DAYS} DAYS</text>`);
-            add(`<text x="${W-PAD}" y="41" font-family="'Courier New',Consolas,monospace" font-size="10" fill="${SUBL}" text-anchor="end">${esc(period)}</text>`);
-            add(`<rect x="${PAD}" y="${H_HEADER}" width="${W-PAD*2}" height="1" fill="url(#divGrad)"/>`);
-
-            // ── stats row ─────────────────────────────────────────────────────
-            const cells = [
-              [`+${fmt(totalAdd)}`, 'LINES ADDED',   GREEN,  'anim-1'],
-              [`-${fmt(totalDel)}`, 'LINES REMOVED', RED,    'anim-2'],
-              [String(Object.keys(repoCommits).length), 'REPOS', CYAN, 'anim-3'],
-              [String(totalCommits), 'COMMITS',      GOLD,   'anim-4'],
+            add(`<clipPath id="clip"><rect width="${W}" height="${H_TOTAL}" rx="${RXC}"/></clipPath>`);
+            add('</defs>');
+            add('<g class="card">');
+            add('<g clip-path="url(#clip)">');
+            add(`<rect width="${W}" height="${H_TOTAL}" fill="url(#bg)"/>`);
+            add(`<rect width="${W}" height="${H_TOTAL}" fill="url(#hatch)"/>`);
+            add('</g>');
+            add(`<rect width="${W}" height="${H_TOTAL}" rx="${RXC}" fill="none" stroke="#ffffff" stroke-opacity=".08" stroke-width="1"/>`);
+            add(`<rect width="${W}" height="${H_TOTAL}" rx="${RXC}" fill="none" stroke="${CREAM}" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="${DASH_VIS} ${DASH_GAP}" class="snake"/>`);
+            add(`<text x="${PAD}" y="38" ${MF} font-size="11" font-weight="700" fill="${CREAM}" letter-spacing="3.5" filter="url(#creamGlow)">CODING STATS</text>`);
+            add(`<text x="${PAD+134}" y="38" ${MF} font-size="10" fill="${MUTED}" letter-spacing="1.5">\u00b7 LAST ${DAYS} DAYS</text>`);
+            add(`<text x="${W-PAD}" y="38" ${MF} font-size="9.5" fill="${MUTED}" text-anchor="end">${esc(period)}</text>`);
+            add(`<rect x="${PAD}" y="${SP_Y}" width="${W-PAD*2}" height="${SP_H}" rx="10" fill="#ffffff" fill-opacity=".05"/>`);
+            add(`<rect x="${PAD}" y="${SP_Y}" width="${W-PAD*2}" height="${SP_H}" rx="10" fill="url(#sheen)"/>`);
+            add(`<rect x="${PAD}" y="${SP_Y}" width="${W-PAD*2}" height="${SP_H}" rx="10" fill="none" stroke="#ffffff" stroke-opacity=".1" stroke-width="1"/>`);
+            add(`<rect x="${PAD+1}" y="${SP_Y+1}" width="${W-PAD*2-2}" height="1" fill="#ffffff" fill-opacity=".06"/>`);
+            const statDefs = [
+              [`+${fmt(totalAdd)}`, 'lines added',   GREEN,  'p1'],
+              [`-${fmt(totalDel)}`, 'lines removed', RED,    'p2'],
+              [String(repoCount),   'repos',         BLUE,   'p3'],
+              [String(totalCommits),'commits',       PURPLE, 'p4'],
             ];
-            const cw = (W - PAD*2) / 4;
-            for (const [i, [val, label, color, cls]] of cells.entries()) {
-              const cx = PAD + i*cw + cw/2;
-              const cellX = PAD + i*cw + 6;
-              const cellY = H_HEADER + 10;
-              const cellW = cw - 12;
-              const cellH = H_STATS - 20;
-              add(`<rect x="${cellX}" y="${cellY}" width="${cellW}" height="${cellH}" rx="10" fill="${color}" fill-opacity="0.06" stroke="${color}" stroke-opacity="0.18" stroke-width="1"/>`);
-              add(`<text x="${cx}" y="${H_HEADER+58}" font-family="'Segoe UI',system-ui,sans-serif" font-size="28" font-weight="700" fill="${color}" text-anchor="middle" filter="url(#glow)" class="${cls}">${esc(val)}</text>`);
-              add(`<text x="${cx}" y="${H_HEADER+78}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="${SUBL}" text-anchor="middle" letter-spacing="2">${label}</text>`);
+            const CW = Math.floor((W - PAD * 2) / 4);
+            for (const [i, [val, label, color, cls]] of statDefs.entries()) {
+              const cx = PAD + i * CW + Math.floor(CW / 2);
+              if (i > 0) add(`<line x1="${PAD + i * CW}" y1="${SP_Y+16}" x2="${PAD + i * CW}" y2="${SP_Y+SP_H-16}" stroke="#ffffff" stroke-opacity=".06" stroke-width="1"/>`);
+              const fs2 = val.length <= 5 ? 25 : val.length <= 7 ? 21 : 18;
+              add(`<text x="${cx}" y="${SP_Y+52}" ${MF} font-size="${fs2}" font-weight="700" fill="${color}" text-anchor="middle" filter="url(#numglow)" class="${cls}">${esc(val)}</text>`);
+              add(`<text x="${cx}" y="${SP_Y+72}" ${MF} font-size="8.5" fill="${MUTED}" text-anchor="middle" letter-spacing="1.5">${label}</text>`);
             }
-            add(`<rect x="${PAD}" y="${H_HEADER+H_STATS}" width="${W-PAD*2}" height="1" fill="url(#divGrad)"/>`);
-
-            // ── 2-column bottom: languages (left) + repos (right) ─────────────
-            const colTop = H_HEADER + H_STATS;
-            const LX = PAD;
-            const RX = PAD + COL_W + COL_GAP;
-
-            // vertical column divider
-            add(`<line x1="${PAD+COL_W+COL_GAP/2}" y1="${colTop+16}" x2="${PAD+COL_W+COL_GAP/2}" y2="${colTop+H_BOTTOM-16}" stroke="${PURPLE}" stroke-opacity="0.2" stroke-width="1" stroke-dasharray="3,4"/>`);
-
-            // ── languages (left column) ───────────────────────────────────────
-            let ly0 = colTop + 22;
-            add(`<text x="${LX}" y="${ly0}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" font-weight="700" fill="${SUBL}" letter-spacing="3">LANGUAGES</text>`);
-            const nameW = 100, pctW = 36, barW = COL_W - nameW - pctW, barH = 6;
-            if (topLangs.length) {
-              for (const [i, [lang, b]] of topLangs.entries()) {
-                const ly   = ly0 + 22 + i*32;
-                const pct  = Math.round(b/totalLB*100);
-                const lc   = LANG_COLORS[lang] || SUBL;
-                const gid  = `lg${lang.replace(/[^a-z0-9]/gi,'_')}`;
-                const tx   = LX + nameW;
-                const fill = Math.max(5, Math.round(barW * pct/100));
-                add(`<circle cx="${LX+5}" cy="${ly+3}" r="4" fill="${lc}" opacity="0.85"/>`);
-                add(`<text x="${LX+14}" y="${ly+7}" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${WHITE}">${esc(lang)}</text>`);
-                add(`<rect x="${tx}" y="${ly}" width="${barW}" height="${barH}" rx="3" fill="#ffffff" fill-opacity="0.05"/>`);
-                add(`<rect x="${tx}" y="${ly}" width="${fill}" height="${barH}" rx="3" fill="url(#${gid})"/>`);
-                add(`<text x="${LX+COL_W}" y="${ly+7}" font-family="'Courier New',Consolas,monospace" font-size="10" fill="${SUBL}" text-anchor="end">${pct}%</text>`);
-              }
-            } else {
-              add(`<text x="${LX}" y="${ly0+24}" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="${SUBL}">No activity this period</text>`);
+            add(`<rect x="${PAD}" y="${SP_Y+SP_H+10}" width="${W-PAD*2}" height="1" fill="url(#creamBar)" opacity=".5"/>`);
+            const glassPanel = (x, y, w, h) => {
+              add(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="#ffffff" fill-opacity=".05"/>`);
+              add(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="url(#sheen)"/>`);
+              add(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="none" stroke="#ffffff" stroke-opacity=".09" stroke-width="1"/>`);
+              add(`<rect x="${x+1}" y="${y+1}" width="${w-2}" height="1" fill="#ffffff" fill-opacity=".05"/>`);
+            };
+            const LX = PAD, RX2 = PAD + BP_W + BP_GAP;
+            glassPanel(LX, BP_Y, BP_W, BP_H);
+            glassPanel(RX2, BP_Y, BP_W, BP_H);
+            const lhdY = BP_Y + 18;
+            add(`<text x="${LX+12}" y="${lhdY}" ${MF} font-size="7" font-weight="700" fill="${CREAM_MUTED}" letter-spacing="3">LANGUAGES</text>`);
+            const BAR_X = LX + 96, BAR_W2 = BP_W - 96 - 30, BAR_H2 = 5;
+            for (const [i, [lang, b]] of topLangs.entries()) {
+              const ly   = lhdY + 18 + i * ROW_H;
+              const pct  = Math.round(b / totalLB * 100);
+              const lc   = LANG_COLORS[lang] || MUTED;
+              const gid  = `lb_${lang.replace(/[^a-z0-9]/gi,'_')}`;
+              const fill = Math.max(4, Math.round(BAR_W2 * pct / 100));
+              add(`<circle cx="${LX+17}" cy="${ly+3}" r="3.5" fill="${lc}" opacity=".9"/>`);
+              add(`<text x="${LX+26}" y="${ly+7}" ${MF} font-size="10.5" fill="${WHITE}">${esc(lang)}</text>`);
+              add(`<rect x="${BAR_X}" y="${ly}" width="${BAR_W2}" height="${BAR_H2}" rx="2.5" fill="#ffffff" fill-opacity=".05"/>`);
+              add(`<rect x="${BAR_X}" y="${ly}" width="${fill}" height="${BAR_H2}" rx="2.5" fill="url(#${gid})"/>`);
+              add(`<text x="${LX+BP_W-8}" y="${ly+7}" ${MF} font-size="9" fill="${MUTED}" text-anchor="end">${pct}%</text>`);
             }
-
-            // ── top repos (right column) ──────────────────────────────────────
-            if (topRepos.length) {
-              let ry = colTop + 22;
-              add(`<text x="${RX}" y="${ry}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" font-weight="700" fill="${SUBL}" letter-spacing="3">TOP REPOS</text>`);
-              for (const [i, [repo, s]] of topRepos.entries()) {
-                const rowY = ry + 22 + i*32;
-                const short = repo.split('/')[1];
-                if (i % 2 === 0) add(`<rect x="${RX}" y="${rowY-11}" width="${COL_W}" height="26" rx="5" fill="#ffffff" fill-opacity="0.025"/>`);
-                add(`<text x="${RX+6}" y="${rowY+5}" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" fill="${WHITE}">${esc(short)}</text>`);
-                add(`<text x="${RX+COL_W}" y="${rowY+5}" font-family="'Courier New',Consolas,monospace" font-size="10" text-anchor="end"><tspan fill="${GREEN}">+${fmt(s.add)}</tspan><tspan fill="${SUBL}">  </tspan><tspan fill="${RED}">-${fmt(s.del)}</tspan><tspan fill="${SUBL}">  </tspan><tspan fill="${SUB}">${s.commits}c</tspan></text>`);
-              }
+            const rhdY = BP_Y + 18;
+            add(`<text x="${RX2+12}" y="${rhdY}" ${MF} font-size="7" font-weight="700" fill="${CREAM_MUTED}" letter-spacing="3">TOP REPOS</text>`);
+            for (const [i, [repo, s]] of topRepos.entries()) {
+              const ry    = rhdY + 18 + i * ROW_H;
+              const short = repo.split('/')[1];
+              if (i % 2 === 0) add(`<rect x="${RX2+6}" y="${ry-10}" width="${BP_W-12}" height="${ROW_H-2}" rx="5" fill="#ffffff" fill-opacity=".03"/>`);
+              add(`<text x="${RX2+14}" y="${ry+6}" ${MF} font-size="11" fill="${WHITE}">${esc(short)}</text>`);
+              add(`<text x="${RX2+BP_W-8}" y="${ry+6}" ${MF} font-size="9" text-anchor="end"><tspan fill="${GREEN}">+${fmt(s.add)}</tspan><tspan fill="${DIM}">  </tspan><tspan fill="${RED}">-${fmt(s.del)}</tspan><tspan fill="${DIM}">  </tspan><tspan fill="${MUTED}">${s.commits}c</tspan></text>`);
             }
-
-            // ── footer ────────────────────────────────────────────────────────
-            add(`<text x="${W/2}" y="${H-13}" font-family="'Segoe UI',system-ui,sans-serif" font-size="8" fill="${SUB}" text-anchor="middle" letter-spacing="2.5" opacity="0.5">AUTO · UPDATED · WEEKLY</text>`);
-
-            add(`</g>`);
-            add(`</svg>`);
+            add(`<text x="${Math.floor(W/2)}" y="${H_TOTAL-12}" ${MF} font-size="7.5" fill="${CREAM_MUTED}" text-anchor="middle" letter-spacing="2.5" opacity=".6">AUTO \u00b7 UPDATED \u00b7 WEEKLY</text>`);
+            add('</g>');
+            add('</svg>');
 
             fs.writeFileSync('stats.svg', lines.join('\n'));
-            console.log(`Written stats.svg (${H}px)`);
+            console.log(`Written stats.svg (${W}x${H_TOTAL}px)`);
 
       - name: Commit
         run: |
