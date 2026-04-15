@@ -38,16 +38,6 @@
   <path d="M8 0 L0 8" stroke="#ffffff" stroke-opacity=".035" stroke-width=".5"/>
   <path d="M0 0 L8 8" stroke="#ffffff" stroke-opacity=".02"  stroke-width=".5"/>
 </pattern>
-<linearGradient id="lb_Python" x1="0" y1="0" x2="1" y2="0">
-  <stop offset="0%"   stop-color="#3572A5" stop-opacity=".9"/>
-  <stop offset="70%"  stop-color="#3572A5" stop-opacity=".5"/>
-  <stop offset="100%" stop-color="#3572A5" stop-opacity=".1"/>
-</linearGradient>
-<linearGradient id="lb_JavaScript" x1="0" y1="0" x2="1" y2="0">
-  <stop offset="0%"   stop-color="#f1e05a" stop-opacity=".9"/>
-  <stop offset="70%"  stop-color="#f1e05a" stop-opacity=".5"/>
-  <stop offset="100%" stop-color="#f1e05a" stop-opacity=".1"/>
-</linearGradient>
 <linearGradient id="lb_HTML" x1="0" y1="0" x2="1" y2="0">
   <stop offset="0%"   stop-color="#e34c26" stop-opacity=".9"/>
   <stop offset="70%"  stop-color="#e34c26" stop-opacity=".5"/>
@@ -58,10 +48,20 @@
   <stop offset="70%"  stop-color="#563d7c" stop-opacity=".5"/>
   <stop offset="100%" stop-color="#563d7c" stop-opacity=".1"/>
 </linearGradient>
-<linearGradient id="lb_TypeScript" x1="0" y1="0" x2="1" y2="0">
-  <stop offset="0%"   stop-color="#3178c6" stop-opacity=".9"/>
-  <stop offset="70%"  stop-color="#3178c6" stop-opacity=".5"/>
-  <stop offset="100%" stop-color="#3178c6" stop-opacity=".1"/>
+<linearGradient id="lb_Python" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#3572A5" stop-opacity=".9"/>
+  <stop offset="70%"  stop-color="#3572A5" stop-opacity=".5"/>
+  <stop offset="100%" stop-color="#3572A5" stop-opacity=".1"/>
+</linearGradient>
+<linearGradient id="lb_JavaScript" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#f1e05a" stop-opacity=".9"/>
+  <stop offset="70%"  stop-color="#f1e05a" stop-opacity=".5"/>
+  <stop offset="100%" stop-color="#f1e05a" stop-opacity=".1"/>
+</linearGradient>
+<linearGradient id="lb_Less" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%"   stop-color="#1d365d" stop-opacity=".9"/>
+  <stop offset="70%"  stop-color="#1d365d" stop-opacity=".5"/>
+  <stop offset="100%" stop-color="#1d365d" stop-opacity=".1"/>
 </linearGradient>
 <clipPath id="clip"><rect width="740" height="395" rx="14"/></clipPath>
 </defs>
@@ -74,21 +74,21 @@
 <rect width="740" height="395" rx="14" fill="none" stroke="#d0b575" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="409 1861" class="snake"/>
 <text x="22" y="38" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" font-weight="700" fill="#d0b575" letter-spacing="3.5" filter="url(#creamGlow)">CODING STATS</text>
 <text x="156" y="38" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10" fill="#5a4e42" letter-spacing="1.5">· LAST 30 DAYS</text>
-<text x="718" y="38" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9.5" fill="#5a4e42" text-anchor="end">Mar 15 – Apr 15</text>
+<text x="718" y="38" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9.5" fill="#5a4e42" text-anchor="end">Mar 16 – Apr 15</text>
 <rect x="22" y="55" width="696" height="94" rx="10" fill="#ffffff" fill-opacity=".05"/>
 <rect x="22" y="55" width="696" height="94" rx="10" fill="url(#sheen)"/>
 <rect x="22" y="55" width="696" height="94" rx="10" fill="none" stroke="#ffffff" stroke-opacity=".1" stroke-width="1"/>
-<rect x="23" y="56" width="694" height="1" rx="0" fill="#ffffff" fill-opacity=".06"/>
-<text x="109" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="21" font-weight="700" fill="#7ec87e" text-anchor="middle" filter="url(#numglow)" class="p1">+6,235</text>
+<rect x="23" y="56" width="694" height="1" fill="#ffffff" fill-opacity=".06"/>
+<text x="109" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="21" font-weight="700" fill="#7ec87e" text-anchor="middle" filter="url(#numglow)" class="p1">+9,041</text>
 <text x="109" y="127" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="8.5" fill="#5a4e42" text-anchor="middle" letter-spacing="1.5">lines added</text>
 <line x1="196" y1="71" x2="196" y2="133" stroke="#ffffff" stroke-opacity=".06" stroke-width="1"/>
-<text x="283" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="21" font-weight="700" fill="#c47070" text-anchor="middle" filter="url(#numglow)" class="p2">-2,039</text>
+<text x="283" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="21" font-weight="700" fill="#c47070" text-anchor="middle" filter="url(#numglow)" class="p2">-3,161</text>
 <text x="283" y="127" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="8.5" fill="#5a4e42" text-anchor="middle" letter-spacing="1.5">lines removed</text>
 <line x1="370" y1="71" x2="370" y2="133" stroke="#ffffff" stroke-opacity=".06" stroke-width="1"/>
 <text x="457" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="25" font-weight="700" fill="#7ab0cf" text-anchor="middle" filter="url(#numglow)" class="p3">7</text>
 <text x="457" y="127" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="8.5" fill="#5a4e42" text-anchor="middle" letter-spacing="1.5">repos</text>
 <line x1="544" y1="71" x2="544" y2="133" stroke="#ffffff" stroke-opacity=".06" stroke-width="1"/>
-<text x="631" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="25" font-weight="700" fill="#a08fd4" text-anchor="middle" filter="url(#numglow)" class="p4">95</text>
+<text x="631" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="25" font-weight="700" fill="#a08fd4" text-anchor="middle" filter="url(#numglow)" class="p4">269</text>
 <text x="631" y="127" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="8.5" fill="#5a4e42" text-anchor="middle" letter-spacing="1.5">commits</text>
 <rect x="22" y="159" width="696" height="1" fill="url(#creamBar)" opacity=".5"/>
 <rect x="22" y="171" width="341" height="190" rx="10" fill="#ffffff" fill-opacity=".05"/>
@@ -100,42 +100,45 @@
 <rect x="377" y="171" width="341" height="190" rx="10" fill="none" stroke="#ffffff" stroke-opacity=".09" stroke-width="1"/>
 <rect x="378" y="172" width="339" height="1" fill="#ffffff" fill-opacity=".05"/>
 <text x="34" y="189" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="7" font-weight="700" fill="#7a6035" letter-spacing="3">LANGUAGES</text>
-<circle cx="39" cy="210" r="3.5" fill="#3572A5" opacity=".9"/>
-<text x="48" y="214" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">Python</text>
+<circle cx="39" cy="210" r="3.5" fill="#e34c26" opacity=".9"/>
+<text x="48" y="214" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">HTML</text>
 <rect x="118" y="207" width="215" height="5" rx="2.5" fill="#ffffff" fill-opacity=".05"/>
-<rect x="118" y="207" width="101" height="5" rx="2.5" fill="url(#lb_Python)"/>
-<text x="355" y="214" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">47%</text>
-<circle cx="39" cy="238" r="3.5" fill="#f1e05a" opacity=".9"/>
-<text x="48" y="242" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">JavaScript</text>
+<rect x="118" y="207" width="211" height="5" rx="2.5" fill="url(#lb_HTML)"/>
+<text x="355" y="214" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">98%</text>
+<circle cx="39" cy="238" r="3.5" fill="#563d7c" opacity=".9"/>
+<text x="48" y="242" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">CSS</text>
 <rect x="118" y="235" width="215" height="5" rx="2.5" fill="#ffffff" fill-opacity=".05"/>
-<rect x="118" y="235" width="60" height="5" rx="2.5" fill="url(#lb_JavaScript)"/>
-<text x="355" y="242" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">28%</text>
-<circle cx="39" cy="266" r="3.5" fill="#e34c26" opacity=".9"/>
-<text x="48" y="270" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">HTML</text>
+<rect x="118" y="235" width="4" height="5" rx="2.5" fill="url(#lb_CSS)"/>
+<text x="355" y="242" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">1%</text>
+<circle cx="39" cy="266" r="3.5" fill="#3572A5" opacity=".9"/>
+<text x="48" y="270" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">Python</text>
 <rect x="118" y="263" width="215" height="5" rx="2.5" fill="#ffffff" fill-opacity=".05"/>
-<rect x="118" y="263" width="30" height="5" rx="2.5" fill="url(#lb_HTML)"/>
-<text x="355" y="270" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">14%</text>
-<circle cx="39" cy="294" r="3.5" fill="#563d7c" opacity=".9"/>
-<text x="48" y="298" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">CSS</text>
+<rect x="118" y="263" width="4" height="5" rx="2.5" fill="url(#lb_Python)"/>
+<text x="355" y="270" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">0%</text>
+<circle cx="39" cy="294" r="3.5" fill="#f1e05a" opacity=".9"/>
+<text x="48" y="298" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">JavaScript</text>
 <rect x="118" y="291" width="215" height="5" rx="2.5" fill="#ffffff" fill-opacity=".05"/>
-<rect x="118" y="291" width="15" height="5" rx="2.5" fill="url(#lb_CSS)"/>
-<text x="355" y="298" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">7%</text>
-<circle cx="39" cy="322" r="3.5" fill="#3178c6" opacity=".9"/>
-<text x="48" y="326" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">TypeScript</text>
+<rect x="118" y="291" width="4" height="5" rx="2.5" fill="url(#lb_JavaScript)"/>
+<text x="355" y="298" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">0%</text>
+<circle cx="39" cy="322" r="3.5" fill="#1d365d" opacity=".9"/>
+<text x="48" y="326" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10.5" fill="#e0d5c8">Less</text>
 <rect x="118" y="319" width="215" height="5" rx="2.5" fill="#ffffff" fill-opacity=".05"/>
-<rect x="118" y="319" width="9" height="5" rx="2.5" fill="url(#lb_TypeScript)"/>
-<text x="355" y="326" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">4%</text>
+<rect x="118" y="319" width="4" height="5" rx="2.5" fill="url(#lb_Less)"/>
+<text x="355" y="326" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" fill="#5a4e42" text-anchor="end">0%</text>
 <text x="389" y="189" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="7" font-weight="700" fill="#7a6035" letter-spacing="3">TOP REPOS</text>
 <rect x="383" y="197" width="329" height="26" rx="5" fill="#ffffff" fill-opacity=".03"/>
-<text x="391" y="213" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">RivalsLuneXVisuals</text>
-<text x="710" y="213" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+2,418</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-91</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">9c</tspan></text>
-<text x="391" y="241" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">Legit-Jarvis</text>
-<text x="710" y="241" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+967</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-766</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">10c</tspan></text>
+<text x="391" y="213" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">legit-rivals-analytics</text>
+<text x="710" y="213" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+1,444</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-1,140</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">67c</tspan></text>
+<text x="391" y="241" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">ssg-rivals-analytics</text>
+<text x="710" y="241" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+2,254</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-216</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">55c</tspan></text>
 <rect x="383" y="253" width="329" height="26" rx="5" fill="#ffffff" fill-opacity=".03"/>
-<text x="391" y="269" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">ignite-rivals</text>
-<text x="710" y="269" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+1,258</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-564</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">11c</tspan></text>
-<text x="391" y="297" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">ssg-rivals</text>
-<text x="710" y="297" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+688</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-264</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">37c</tspan></text>
+<text x="391" y="269" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">senshastic</text>
+<text x="710" y="269" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+1,336</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-687</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">13c</tspan></text>
+<text x="391" y="297" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">Legit-Jarvis</text>
+<text x="710" y="297" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+967</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-766</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">10c</tspan></text>
+<rect x="383" y="309" width="329" height="26" rx="5" fill="#ffffff" fill-opacity=".03"/>
+<text x="391" y="325" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">Fallsha-Jankyard</text>
+<text x="710" y="325" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+1,448</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-0</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">1c</tspan></text>
 <text x="370" y="383" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="7.5" fill="#7a6035" text-anchor="middle" letter-spacing="2.5" opacity=".6">AUTO · UPDATED · WEEKLY</text>
 </g>
 </svg>
