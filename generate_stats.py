@@ -164,9 +164,9 @@ total_lb  = sum(lang_bytes.values()) or 1
 top_langs = sorted(lang_bytes.items(), key=lambda x: -x[1])[:5]
 
 top_repos = sorted(
-    repo_stats.items(),
+    [(r, s) for r, s in repo_stats.items() if s['add'] > 50],
     key=lambda x: -x[1]['commits']
-)[:5]
+)
 
 repo_count = len(repo_commit_shas)
 print(f'  +{total_add} / -{total_del}, {repo_count} repos, {total_commits} commits')

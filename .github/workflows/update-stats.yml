@@ -115,7 +115,7 @@ jobs:
             }
             const totalLB = Object.values(langBytes).reduce((a,b)=>a+b,0) || 1;
             const topLangs = Object.entries(langBytes).sort((a,b)=>b[1]-a[1]).slice(0,5);
-            const topRepos = Object.entries(repoStats).sort((a,b)=>b[1].commits-a[1].commits).slice(0,5);
+            const topRepos = Object.entries(repoStats).filter(([,s])=>s.add>50).sort((a,b)=>b[1].commits-a[1].commits);
             const repoCount = Object.keys(repoCommitShas).length;
             console.log(`+${totalAdd} / -${totalDel}, ${repoCount} repos, ${totalCommits} commits`);
 
