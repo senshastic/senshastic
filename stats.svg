@@ -64,21 +64,21 @@
 <rect width="740" height="339" rx="14" fill="none" stroke="#d0b575" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="388 1770" class="snake"/>
 <text x="22" y="38" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" font-weight="700" fill="#d0b575" letter-spacing="3.5" filter="url(#creamGlow)">CODING STATS</text>
 <text x="156" y="38" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="10" fill="#5a4e42" letter-spacing="1.5">· LAST 30 DAYS</text>
-<text x="718" y="38" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9.5" fill="#5a4e42" text-anchor="end">Aug 15 – Sep 14</text>
+<text x="718" y="38" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9.5" fill="#5a4e42" text-anchor="end">Aug 22 – Sep 21</text>
 <rect x="22" y="55" width="696" height="94" rx="10" fill="#ffffff" fill-opacity=".05"/>
 <rect x="22" y="55" width="696" height="94" rx="10" fill="url(#sheen)"/>
 <rect x="22" y="55" width="696" height="94" rx="10" fill="none" stroke="#ffffff" stroke-opacity=".1" stroke-width="1"/>
 <rect x="23" y="56" width="694" height="1" fill="#ffffff" fill-opacity=".06"/>
-<text x="109" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="25" font-weight="700" fill="#7ec87e" text-anchor="middle" filter="url(#numglow)" class="p1">+431</text>
+<text x="109" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="25" font-weight="700" fill="#7ec87e" text-anchor="middle" filter="url(#numglow)" class="p1">+290</text>
 <text x="109" y="127" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="8.5" fill="#5a4e42" text-anchor="middle" letter-spacing="1.5">lines added</text>
 <line x1="196" y1="71" x2="196" y2="133" stroke="#ffffff" stroke-opacity=".06" stroke-width="1"/>
-<text x="283" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="25" font-weight="700" fill="#c47070" text-anchor="middle" filter="url(#numglow)" class="p2">-99</text>
+<text x="283" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="25" font-weight="700" fill="#c47070" text-anchor="middle" filter="url(#numglow)" class="p2">-84</text>
 <text x="283" y="127" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="8.5" fill="#5a4e42" text-anchor="middle" letter-spacing="1.5">lines removed</text>
 <line x1="370" y1="71" x2="370" y2="133" stroke="#ffffff" stroke-opacity=".06" stroke-width="1"/>
 <text x="457" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="25" font-weight="700" fill="#7ab0cf" text-anchor="middle" filter="url(#numglow)" class="p3">2</text>
 <text x="457" y="127" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="8.5" fill="#5a4e42" text-anchor="middle" letter-spacing="1.5">repos</text>
 <line x1="544" y1="71" x2="544" y2="133" stroke="#ffffff" stroke-opacity=".06" stroke-width="1"/>
-<text x="631" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="25" font-weight="700" fill="#a08fd4" text-anchor="middle" filter="url(#numglow)" class="p4">10</text>
+<text x="631" y="107" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="25" font-weight="700" fill="#a08fd4" text-anchor="middle" filter="url(#numglow)" class="p4">6</text>
 <text x="631" y="127" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="8.5" fill="#5a4e42" text-anchor="middle" letter-spacing="1.5">commits</text>
 <rect x="22" y="159" width="696" height="1" fill="url(#creamBar)" opacity=".5"/>
 <rect x="22" y="171" width="341" height="134" rx="10" fill="#ffffff" fill-opacity=".05"/>
@@ -108,7 +108,7 @@
 <text x="389" y="189" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="7" font-weight="700" fill="#7a6035" letter-spacing="3">TOP REPOS</text>
 <rect x="383" y="197" width="329" height="26" rx="5" fill="#ffffff" fill-opacity=".03"/>
 <text x="391" y="213" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="11" fill="#e0d5c8">vp-rivals-analytics</text>
-<text x="710" y="213" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+426</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-94</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">8c</tspan></text>
+<text x="710" y="213" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="9" text-anchor="end"><tspan fill="#7ec87e">+289</tspan><tspan fill="#302820">  </tspan><tspan fill="#c47070">-83</tspan><tspan fill="#302820">  </tspan><tspan fill="#5a4e42">5c</tspan></text>
 <text x="370" y="327" font-family="'Cascadia Code','Fira Code','SF Mono',ui-monospace,monospace" font-size="7.5" fill="#7a6035" text-anchor="middle" letter-spacing="2.5" opacity=".6">AUTO · UPDATED · WEEKLY</text>
 </g>
 </svg>
